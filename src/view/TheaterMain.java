@@ -6,8 +6,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class TheaterMain extends JFrame{
-	JPanel cardPanel;
-	CardLayout card;
+	public static JPanel cardPanel;
+	public static CardLayout card;
 	StartView sv;
 	MovieView mv;
 	
@@ -15,7 +15,7 @@ public class TheaterMain extends JFrame{
 		card = new CardLayout();
 		cardPanel = new JPanel(card);
 		
-		sv = new StartView(card, cardPanel);
+		sv = new StartView();
 		mv = new MovieView();
 		
 		cardPanel.add("sv", sv);

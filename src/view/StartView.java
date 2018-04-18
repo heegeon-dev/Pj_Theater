@@ -20,13 +20,10 @@ public class StartView extends JPanel {
 	private JLabel lbBookingPrint, lbStartView;
 	private JLabel lbTicketBuy;
 	
-	JPanel cardPanel;
-	CardLayout card;
 	
-	public StartView(CardLayout card, JPanel cardPanel) {
-		this.card = card;
-		this.cardPanel = cardPanel;
-		
+	
+	public StartView() {
+
 		addLayout();
 		eventProc();
 	}
@@ -45,7 +42,7 @@ public class StartView extends JPanel {
 			Object evt = e.getSource();
 			if(evt == lbTicketBuy){
 				//JOptionPane.showMessageDialog(null, "1번 다음으로 넘어갑니다.");
-				card.show(cardPanel, "mv");
+				TheaterMain.card.show(TheaterMain.cardPanel, "mv");
 			}else if( evt == lbBookingPrint ){
 				JOptionPane.showMessageDialog(null, "2번 다음으로 넘어갑니다.");
 			}

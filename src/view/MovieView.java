@@ -17,7 +17,7 @@ import java.awt.Color;
 public class MovieView extends JPanel implements ActionListener {
 
 	JButton btnNewButton, btnNewButton_1, button;
-
+	JLabel lbPrev;
 	int row = 3;
 	int col = 4;
 	JLabel[][] movieAll = new JLabel[row][col];
@@ -28,10 +28,6 @@ public class MovieView extends JPanel implements ActionListener {
 	SimpleDateFormat format1 = new SimpleDateFormat("yyyy.MM.dd",Locale.KOREA);
 	final String[] week = { "일", "월", "화", "수", "목", "금", "토" };
 	
-	// JLabel lblNewLabel, lblNewLabel_1, label_2, label_3, label_4, label_5,
-	// label_6, label_7, label_8, label_9, label_10,
-	// label_11, label_12;
-
 	public MovieView() {
 		addLayout();
 		eventProc();
@@ -43,7 +39,8 @@ public class MovieView extends JPanel implements ActionListener {
 		}
 		
 		btnNewButton.setText(format1.format(cal.getTime())+ " "+week[cal.get(Calendar.DAY_OF_WEEK) - 1] + "요일");
-
+		
+		
 	}
 
 	public void addLayout() {
@@ -85,33 +82,17 @@ public class MovieView extends JPanel implements ActionListener {
 		lblNewLabel.setBounds(12, 10, 50, 100);
 		panel_2.add(lblNewLabel);
 
-		// lblNewLabel_1 = new JLabel("New label");
-		// lblNewLabel_1.setBounds(66, 10, 140, 100);
-		// panel_2.add(lblNewLabel_1);
-
 		movieAll[0][0] = new JLabel("New label");
 		movieAll[0][0].setBounds(66, 10, 140, 100);
 		panel_2.add(movieAll[0][0]);
-
-		// label_2 = new JLabel("New label");
-		// label_2.setBounds(230, 10, 140, 100);
-		// panel_2.add(label_2);
 
 		movieAll[0][1] = new JLabel("New label");
 		movieAll[0][1].setBounds(230, 10, 140, 100);
 		panel_2.add(movieAll[0][1]);
 
-		// label_3 = new JLabel("New label");
-		// label_3.setBounds(398, 10, 140, 100);
-		// panel_2.add(label_3);
-
 		movieAll[0][2] = new JLabel("New label");
 		movieAll[0][2].setBounds(398, 10, 140, 100);
 		panel_2.add(movieAll[0][2]);
-
-		// label_4 = new JLabel("New label");
-		// label_4.setBounds(556, 10, 140, 100);
-		// panel_2.add(label_4);
 
 		movieAll[0][3] = new JLabel("New label");
 		movieAll[0][3].setBounds(556, 10, 140, 100);
@@ -126,33 +107,17 @@ public class MovieView extends JPanel implements ActionListener {
 		label.setBounds(12, 10, 50, 100);
 		panel_3.add(label);
 
-		// label_5 = new JLabel("New label");
-		// label_5.setBounds(66, 10, 140, 100);
-		// panel_3.add(label_5);
-
 		movieAll[1][0] = new JLabel("New label");
 		movieAll[1][0].setBounds(66, 10, 140, 100);
 		panel_3.add(movieAll[1][0]);
-
-		// label_6 = new JLabel("New label");
-		// label_6.setBounds(221, 10, 140, 100);
-		// panel_3.add(label_6);
 
 		movieAll[1][1] = new JLabel("New label");
 		movieAll[1][1].setBounds(221, 10, 140, 100);
 		panel_3.add(movieAll[1][1]);
 
-		// label_7 = new JLabel("New label");
-		// label_7.setBounds(397, 10, 140, 100);
-		// panel_3.add(label_7);
-
 		movieAll[1][2] = new JLabel("New label");
 		movieAll[1][2].setBounds(397, 10, 140, 100);
 		panel_3.add(movieAll[1][2]);
-
-		// label_8 = new JLabel("New label");
-		// label_8.setBounds(558, 10, 140, 100);
-		// panel_3.add(label_8);
 
 		movieAll[1][3] = new JLabel("New label");
 		movieAll[1][3].setBounds(558, 10, 140, 100);
@@ -167,37 +132,27 @@ public class MovieView extends JPanel implements ActionListener {
 		label_1.setBounds(12, 10, 50, 100);
 		panel_4.add(label_1);
 
-		// label_9 = new JLabel("New label");
-		// label_9.setBounds(66, 10, 140, 100);
-		// panel_4.add(label_9);
-
 		movieAll[2][0] = new JLabel("New label");
 		movieAll[2][0].setBounds(66, 10, 140, 100);
 		panel_4.add(movieAll[2][0]);
-
-		// label_10 = new JLabel("New label");
-		// label_10.setBounds(218, 10, 140, 100);
-		// panel_4.add(label_10);
 
 		movieAll[2][1] = new JLabel("New label");
 		movieAll[2][1].setBounds(218, 10, 140, 100);
 		panel_4.add(movieAll[2][1]);
 
-		// label_11 = new JLabel("New label");
-		// label_11.setBounds(396, 10, 140, 100);
-		// panel_4.add(label_11);
-
 		movieAll[2][2] = new JLabel("New label");
 		movieAll[2][2].setBounds(396, 10, 140, 100);
 		panel_4.add(movieAll[2][2]);
 
-		// label_12 = new JLabel("New label");
-		// label_12.setBounds(558, 10, 140, 100);
-		// panel_4.add(label_12);
-
 		movieAll[2][3] = new JLabel("New label");
 		movieAll[2][3].setBounds(558, 10, 140, 100);
 		panel_4.add(movieAll[2][3]);
+		
+		lbPrev = new JLabel("");
+		lbPrev.setIcon(new ImageIcon("C:\\Users\\student\\Desktop\\무인발권기\\p6.PNG"));
+		lbPrev.setBounds(12, 596, 115, 52);
+		add(lbPrev);
+
 
 	}
 
@@ -205,8 +160,8 @@ public class MovieView extends JPanel implements ActionListener {
 		btnNewButton_1.addActionListener(this);
 		btnNewButton.addActionListener(this);
 		button.addActionListener(this);
-
 		MouseHandler mouseLsnr = new MouseHandler();
+		lbPrev.addMouseListener(mouseLsnr);
 
 		for (int i = 0; i < row; i++) {
 			for (int j = 0; j < col; j++) {
@@ -216,8 +171,6 @@ public class MovieView extends JPanel implements ActionListener {
 		}
 
 	}
-
-
 
 	@Override // 액션리스너 for buttons
 	public void actionPerformed(ActionEvent e) {
@@ -243,8 +196,12 @@ public class MovieView extends JPanel implements ActionListener {
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			// TODO Auto-generated method stub
-			System.out.println("label");
+			Object evt = e.getSource();
+			if(evt == lbPrev){
+				//JOptionPane.showMessageDialog(null, "1번 다음으로 넘어갑니다.");
+				TheaterMain.cardPanel.setSize(800,600);
+				TheaterMain.card.previous(TheaterMain.cardPanel);
+			}
 		}
 
 	}
