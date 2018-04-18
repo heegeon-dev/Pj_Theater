@@ -13,14 +13,20 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import java.awt.FlowLayout;
 
 public class StartView extends JPanel {
 
 	private JLabel lbBookingPrint, lbStartView;
 	private JLabel lbTicketBuy;
 	
+	JPanel cardPanel;
+	CardLayout card;
 	
-	public StartView() {
+	public StartView(CardLayout card, JPanel cardPanel) {
+		this.card = card;
+		this.cardPanel = cardPanel;
+		
 		addLayout();
 		eventProc();
 	}
@@ -38,7 +44,8 @@ public class StartView extends JPanel {
 		public void mouseClicked(MouseEvent e) {
 			Object evt = e.getSource();
 			if(evt == lbTicketBuy){
-				JOptionPane.showMessageDialog(null, "1번 다음으로 넘어갑니다.");
+				//JOptionPane.showMessageDialog(null, "1번 다음으로 넘어갑니다.");
+				card.show(cardPanel, "mv");
 			}else if( evt == lbBookingPrint ){
 				JOptionPane.showMessageDialog(null, "2번 다음으로 넘어갑니다.");
 			}
@@ -47,9 +54,7 @@ public class StartView extends JPanel {
 	
 	public void addLayout(){
 	
-		
-		
-		setBounds(100, 100, 800,600);
+		setBounds(100, 100, 1000,1500);
 		
 		setBackground(Color.WHITE);
 		setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -58,7 +63,7 @@ public class StartView extends JPanel {
 		
 		lbStartView = new JLabel("");
 		
-		lbStartView.setIcon(new ImageIcon("p4.PNG"));
+		lbStartView.setIcon(new ImageIcon("C:\\Users\\student\\Desktop\\무인발권기\\p4.PNG"));
 		lbStartView.setBounds(36, 32, 730, 507);
 		add(lbStartView);
 		
