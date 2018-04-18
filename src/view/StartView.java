@@ -1,3 +1,5 @@
+package view;
+
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -6,7 +8,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -18,8 +19,8 @@ import javax.swing.border.EmptyBorder;
 public class StartView extends JFrame implements ActionListener{
 
 	private JPanel contentPane;
-	private JLabel lblNewLabel_1, lblNewLabel;
-	private JButton btnNewButton;
+	private JLabel lbBookingPrint, lbStartView;
+	private JLabel lbTicketBuy;
 	
 
 	public static void main(String[] args) {
@@ -42,28 +43,30 @@ public class StartView extends JFrame implements ActionListener{
 	
 	
 	void eventProc(){
-//		MyMouseListener mc = new MyMouseListener();
 		
-//		lblNewLabel_1.addMouseListener( mc );
-		lblNewLabel_1.addMouseListener( new MouseAdapter() { 
-			public void mouseClicked(MouseEvent e) {
-						JOptionPane.showMessageDialog(null, "다음으로 넘어갑니다.");
-			}
-		});
-		
+		MyMouseListener mc = new MyMouseListener();
+		lbBookingPrint.addMouseListener( mc );
+		lbTicketBuy.addMouseListener( mc );
+//		lblNewLabel_1.addMouseListener( new MouseAdapter() { 
+//			public void mouseClicked(MouseEvent e) {
+//						JOptionPane.showMessageDialog(null, "다음으로 넘어갑니다.");
+//			}
+//		});
+//		
 	}
 	
-//	class MyMouseListener extends MouseAdapter{
-//		
-//		@Override
-//		public void mouseClicked(MouseEvent e) {
-//			Object evt = e.getSource();
-//			if( evt == lblNewLabel_1 ){
-//				JOptionPane.showMessageDialog(null, "다음으로 넘어갑니다.");
-//			}
-//		}
-//	}
-	
+	class MyMouseListener extends MouseAdapter{
+		
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			Object evt = e.getSource();
+			if(evt == lbTicketBuy){
+				JOptionPane.showMessageDialog(null, "1번 다음으로 넘어갑니다.");
+			}else if( evt == lbBookingPrint ){
+				JOptionPane.showMessageDialog(null, "2번 다음으로 넘어갑니다.");
+			}
+		}	// inner class
+	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
 			
@@ -81,21 +84,18 @@ public class StartView extends JFrame implements ActionListener{
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\student\\Desktop\\무인발권기\\p4.PNG"));
-		lblNewLabel.setBounds(36, 32, 730, 507);
-		contentPane.add(lblNewLabel);
+		lbStartView = new JLabel("");
+		lbStartView.setIcon(new ImageIcon("C:\\Users\\student\\Desktop\\무인발권기\\p4.PNG"));
+		lbStartView.setBounds(36, 32, 730, 507);
+		contentPane.add(lbStartView);
 		
-		JButton btnNewButton = new JButton("티켓구매");
-		btnNewButton.setForeground(Color.GRAY);
-		btnNewButton.setBackground(Color.LIGHT_GRAY);
-		btnNewButton.setFont(new Font("맑은 고딕", Font.BOLD, 18));
-		btnNewButton.setBounds(74, 280, 207, 153);
-		contentPane.add(btnNewButton);
+		lbBookingPrint = new JLabel("New label");
+		lbBookingPrint.setBounds(496, 280, 199, 153);
+		contentPane.add(lbBookingPrint);
 		
-		JLabel lblNewLabel_1 = new JLabel("New label");
-		lblNewLabel_1.setBounds(496, 280, 199, 153);
-		contentPane.add(lblNewLabel_1);
+		lbTicketBuy = new JLabel("New label");
+		lbTicketBuy.setBounds(77, 280, 204, 153);
+		contentPane.add(lbTicketBuy);
 	}
 	
 	
