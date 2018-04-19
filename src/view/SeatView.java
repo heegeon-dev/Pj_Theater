@@ -90,7 +90,7 @@ public class SeatView extends Panel implements MouseListener {
 
 		lb_person = new JLabel("0");
 		lb_person.setFont(new Font("굴림", Font.PLAIN, 53));
-		lb_person.setBounds(675, 258, 38, 141);
+		lb_person.setBounds(674, 254, 38, 141);
 		add(lb_person);
 
 		jb_minus = new JButton("-");
@@ -99,15 +99,15 @@ public class SeatView extends Panel implements MouseListener {
 
 		jb_plus = new JButton("+");
 
-		jb_plus.setBounds(725, 304, 53, 47);
+		jb_plus.setBounds(724, 304, 53, 47);
 		add(jb_plus);
 
 		jb_pre = new JButton("이전");
-		jb_pre.setBounds(605, 474, 75, 59);
+		jb_pre.setBounds(605, 477, 75, 59);
 		add(jb_pre);
 
 		jb_next = new JButton("다음");
-		jb_next.setBounds(692, 474, 75, 59);
+		jb_next.setBounds(702, 477, 75, 59);
 		add(jb_next);
 
 		for (int i = 0; i < seat.length; i++)
