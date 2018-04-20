@@ -5,6 +5,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -13,20 +14,28 @@ import javax.swing.SwingConstants;
 public class PayView extends JPanel {
 	JLabel[] lb = new JLabel[3];
 	JLabel[] img = new JLabel[3];
-
-	public PayView(int person) {
-		addLayout();
-		eventProc();
-		
-		setLayout(null);
-	//	add(new payOfCash(person));
-	}
+	String movietitle, starttime,  endtime,date;
+	ArrayList<String> selectedSeat;
+	int person;
+	int selectRoomnum;
 
 	void eventProc() {
 		MouseHandler hlr = new MouseHandler();
 		for (int i = 0; i < 3; i++)
 			lb[i].addMouseListener(hlr);
 	}
+
+	public PayView(String movietitle, String starttime, String endtime,ArrayList<String> selectedSeat, int person,int selectRoomnum,String date) {
+	this.movietitle = movietitle;
+	this.starttime = starttime;
+	this.endtime = endtime;
+	this.selectedSeat = selectedSeat;
+	this.person = person;
+	this.selectRoomnum=selectRoomnum;
+	this.date = date;
+	addLayout();
+	eventProc();
+}
 
 	void addLayout() {
 		setLayout(null);
@@ -60,6 +69,9 @@ public class PayView extends JPanel {
 				if (ob == lb[i]) {
 					System.out.println(lb[i].getText());
 					// 화면넘기기
+					TheaterMain.cardPanel.add("ptv", new PrintView(movietitle,starttime,endtime,selectedSeat,person,selectRoomnum,date));
+					TheaterMain.card.show(TheaterMain.cardPanel, "ptv");
+					
 				}
 			}
 

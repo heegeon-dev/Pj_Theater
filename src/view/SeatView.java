@@ -4,31 +4,41 @@ import java.awt.Panel;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.StringTokenizer;
 
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
+
 import java.awt.Color;
 import java.awt.Font;
 import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class SeatView extends Panel implements MouseListener {
 
 	JButton jb_minus, jb_plus, jb_pre, jb_next;
 	JLabel[][] seat = new JLabel[8][10];
 	int person, cnt;
-	JLabel lb_person;
+	JLabel lb_person, movieinfo;
 	ArrayList<String> selectedSeats;
 	boolean[][] booking = new boolean[8][10];
+	ArrayList<String> selectedSeat;
+	String movietitle,starttime, endtime,date;
+	int selectRoomnum;
 
-	public SeatView() {
 
+	public SeatView(String movietitle, String starttime, String endtime , int selectRoomnum,String date) {
 		addLayout();
 		initSeat();
 		eventProc();
+		movieinfo.setText("<html>" + movietitle + "<br>" + starttime + "</html>");
+		this.movietitle = movietitle;
+		this.starttime = starttime;
+		this.endtime = endtime;
+		this.selectRoomnum = selectRoomnum;
+		this.date = date;
+		selectedSeat = new ArrayList<String>();
 	}
 
 	private void initSeat() {
@@ -84,9 +94,9 @@ public class SeatView extends Panel implements MouseListener {
 		jl_Screen.setHorizontalAlignment(SwingConstants.CENTER);
 		add(jl_Screen);
 
-		JLabel lblNewLabel = new JLabel("New label");
-		lblNewLabel.setBounds(628, 75, 139, 130);
-		add(lblNewLabel);
+		movieinfo = new JLabel("New label");
+		movieinfo.setBounds(628, 75, 139, 130);
+		add(movieinfo);
 
 		lb_person = new JLabel("0");
 		lb_person.setFont(new Font("굴림", Font.PLAIN, 53));
@@ -145,22 +155,31 @@ public class SeatView extends Panel implements MouseListener {
 				person++;
 				lb_person.setText(String.valueOf(person));
 			}
+		} else if (jb_next == ob) {
+			System.out.println(movietitle+" "+starttime+" "+endtime+" "+" "+person);
+			Collections.sort(selectedSeat);
+			System.out.println(selectedSeat.toString());
+			TheaterMain.cardPanel.add("pv", new PayView(movietitle,starttime,endtime,selectedSeat,person,selectRoomnum,date));
+			TheaterMain.card.show(TheaterMain.cardPanel, "pv");
 		}
 
 		for (int i = 0; i < seat.length; i++)
 			for (int j = 0; j < seat[i].length; j++) {
 				if (seat[i][j] == ob) {
-					if (e.getButton() == MouseEvent.BUTTON1){
-						if (cnt < person && booking[i][j] == false && booking[i][j]==false) {
+					if (e.getButton() == MouseEvent.BUTTON1) {
+						if (cnt < person && booking[i][j] == false && booking[i][j] == false) {
 							seat[i][j].setBackground(Color.cyan);
 							cnt++;
 							booking[i][j] = true;
+							selectedSeat.add(seat[i][j].getText());
 						}
-					}else if(e.getButton() == MouseEvent.BUTTON3 && booking[i][j]==true){
-						if(cnt>0 && booking[i][j]==true){
+					} else if (e.getButton() == MouseEvent.BUTTON3 && booking[i][j] == true) {
+						if (cnt > 0 && booking[i][j] == true) {
 							seat[i][j].setBackground(Color.lightGray);
 							cnt--;
-							booking[i][j] = false;							
+							booking[i][j] = false;
+							selectedSeat.remove(seat[i][j].getText());
+							
 						}
 					}
 				}

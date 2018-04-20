@@ -9,7 +9,9 @@ package view;
 	import java.awt.Color;
 	import java.awt.event.MouseAdapter;
 	import java.awt.event.MouseEvent;
-	import javax.swing.border.BevelBorder;
+import java.util.ArrayList;
+
+import javax.swing.border.BevelBorder;
 	import javax.swing.border.LineBorder;
 
 	
@@ -25,17 +27,29 @@ package view;
 		JLabel lblPrintInfoLine1,lblPrintInfoLine2,lblPrintInfoLine3,lblPrintInfoLine4;
 		JLabel lblPrintInfoTitle,lblPrintInfoDate,lblPrintInfoTime,lblPrintInfoTheaterNum,lblPrintInfoSeat;
 		JLabel lblPrintInfoMoney,lblPrintInfoMember,lblPrintInfoPoint;
+		String movietitle, starttime,  endtime,date;
+		ArrayList<String> selectedSeat;
+		int person;
+		int selectRoomnum;
 		
 //		PrintModel model;
 		
 		
-		public PrintView() {
+		public PrintView(String movietitle, String starttime, String endtime, ArrayList<String> selectedSeat,
+				int person, int selectRoomnum,String date) {
+			this.movietitle = movietitle;
+			this.starttime = starttime;
+			this.endtime = endtime;
+			this.selectedSeat = selectedSeat;
+			this.person = person;
+			this.selectRoomnum = selectRoomnum;
+			this.date= date;
 			setBackground(Color.WHITE);
 			addLayout();
 			eventProc();
 			connectDB();
 		}
-		
+
 		void eventProc(){
 			MyMouseListener mc = new MyMouseListener();
 			lblPrint.addMouseListener(mc);
@@ -93,7 +107,7 @@ package view;
 			setLayout(null);
 			
 			lblCGV = new JLabel("");
-			lblCGV.setIcon(new ImageIcon("C:\\Users\\student\\Desktop\\무인발권기\\p1.PNG"));
+			lblCGV.setIcon(new ImageIcon("img\\p1.PNG"));
 			lblCGV.setBounds(47, 41, 130, 87);
 			add(lblCGV);
 			
@@ -122,31 +136,31 @@ package view;
 			lblPrintInfoLine1.setBounds(12, 68, 318, 27);
 			p_receipt.add(lblPrintInfoLine1);
 			
-			lblPrintInfoTitle = new JLabel("\"영화제목\"");
+			lblPrintInfoTitle = new JLabel(movietitle);
 			lblPrintInfoTitle.setForeground(Color.DARK_GRAY);
 			lblPrintInfoTitle.setFont(new Font("맑은 고딕", Font.BOLD, 15));
 			lblPrintInfoTitle.setBounds(12, 98, 174, 27);
 			p_receipt.add(lblPrintInfoTitle);
 			
-			lblPrintInfoDate = new JLabel("\"영화날짜\"");
+			lblPrintInfoDate = new JLabel(date);
 			lblPrintInfoDate.setForeground(Color.DARK_GRAY);
 			lblPrintInfoDate.setFont(new Font("맑은 고딕", Font.BOLD, 15));
 			lblPrintInfoDate.setBounds(12, 135, 174, 27);
 			p_receipt.add(lblPrintInfoDate);
 			
-			lblPrintInfoTime = new JLabel("\"영화시간\"");
+			lblPrintInfoTime = new JLabel(starttime +" ~ "+ endtime);
 			lblPrintInfoTime.setForeground(Color.DARK_GRAY);
 			lblPrintInfoTime.setFont(new Font("맑은 고딕", Font.BOLD, 15));
 			lblPrintInfoTime.setBounds(12, 172, 174, 27);
 			p_receipt.add(lblPrintInfoTime);
 			
-			lblPrintInfoTheaterNum = new JLabel("\"x관\"");
+			lblPrintInfoTheaterNum = new JLabel(selectRoomnum+"관");
 			lblPrintInfoTheaterNum.setForeground(Color.DARK_GRAY);
 			lblPrintInfoTheaterNum.setFont(new Font("맑은 고딕", Font.BOLD, 15));
 			lblPrintInfoTheaterNum.setBounds(12, 209, 45, 27);
 			p_receipt.add(lblPrintInfoTheaterNum);
 			
-			lblPrintInfoSeat = new JLabel("\"좌석들\"");
+			lblPrintInfoSeat = new JLabel(selectedSeat.toString());
 			lblPrintInfoSeat.setForeground(Color.DARK_GRAY);
 			lblPrintInfoSeat.setFont(new Font("맑은 고딕", Font.BOLD, 15));
 			lblPrintInfoSeat.setBounds(69, 209, 240, 27);
@@ -170,7 +184,7 @@ package view;
 			lblPrintInfoMoney.setBounds(91, 272, 67, 27);
 			p_receipt.add(lblPrintInfoMoney);
 			
-			lblPrintInfoMember = new JLabel("\"(0명)\"");
+			lblPrintInfoMember = new JLabel(String.valueOf(person)+"명");
 			lblPrintInfoMember.setForeground(Color.DARK_GRAY);
 			lblPrintInfoMember.setFont(new Font("맑은 고딕", Font.BOLD, 15));
 			lblPrintInfoMember.setBounds(170, 272, 67, 27);
@@ -207,12 +221,12 @@ package view;
 			p_receipt.add(lblPrintInfo5);
 			
 			lblPrint = new JLabel("");
-			lblPrint.setIcon(new ImageIcon("C:\\Users\\student\\Desktop\\무인발권기\\p7.PNG"));
+			lblPrint.setIcon(new ImageIcon("img\\p7.PNG"));
 			lblPrint.setBounds(561, 79, 137, 49);
 			add(lblPrint);
 			
 			lblMobile = new JLabel("");
-			lblMobile.setIcon(new ImageIcon("C:\\Users\\student\\Desktop\\무인발권기\\p8.PNG"));
+			lblMobile.setIcon(new ImageIcon("img\\p8.PNG"));
 			lblMobile.setBounds(561, 138, 137, 49);
 			add(lblMobile);
 			
@@ -228,13 +242,13 @@ package view;
 			
 			
 			lblTelIcon = new JLabel("");
-			lblTelIcon.setIcon(new ImageIcon("C:\\Users\\student\\Desktop\\무인발권기\\p9.PNG"));
+			lblTelIcon.setIcon(new ImageIcon("img\\p9.PNG"));
 			lblTelIcon.setBounds(583, 197, 27, 21);
 			add(lblTelIcon);
 			lblTelIcon.setVisible(false);
 			
 			lblSend = new JLabel("New label");
-			lblSend.setIcon(new ImageIcon("C:\\Users\\student\\Desktop\\무인발권기\\p10.PNG"));
+			lblSend.setIcon(new ImageIcon("img\\p10.PNG"));
 			lblSend.setBounds(727, 197, 42, 21);
 			add(lblSend);
 			lblSend.setVisible(false);

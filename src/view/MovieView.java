@@ -218,7 +218,7 @@ public class MovieView extends JPanel implements ActionListener {
 
 		for (RoomNum = 1; RoomNum < 4; RoomNum++) {
 
-			File f = new File("src\\" + RoomNum + "_" + thisday + ".txt");
+			File f = new File("scedule\\" + RoomNum + "_" + thisday + ".txt");
 			BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(f), "euc-kr"));
 			// FileReader br = new FileReader(f);
 			// euc-kr을 utf-8로 바꿔서 읽는 코딩 필요!
@@ -372,11 +372,20 @@ public class MovieView extends JPanel implements ActionListener {
 					if (evt == movieAll[i][j]) {
 						curRow = i;
 						curCol = j;
+						String movieinfo = movieAll[i][j].getText();
+						StringTokenizer st = new StringTokenizer(movieinfo, "<html><br></html>~");
+						String starttime = st.nextToken();
+						String endtime = st.nextToken();
+						String movietitle = st.nextToken();
+						String date = btnNewButton.getText();
+						int selectRoomnum = curCol;
+						TheaterMain.cardPanel.add("sv",new SeatView(movietitle,starttime,endtime,selectRoomnum,date));
+						TheaterMain.card.show(TheaterMain.cardPanel, "sv");
 					}
 				}
 			}
 
-			System.out.println("label");
+
 
 		}
 

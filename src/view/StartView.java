@@ -44,7 +44,7 @@ public class StartView extends JPanel {
 				//JOptionPane.showMessageDialog(null, "1번 다음으로 넘어갑니다.");
 				TheaterMain.card.show(TheaterMain.cardPanel, "mv");
 			}else if( evt == lbBookingPrint ){
-				JOptionPane.showMessageDialog(null, "2번 다음으로 넘어갑니다.");
+				TheaterMain.card.show(TheaterMain.cardPanel, "bv");
 			}
 		}
 	}	// inner class
@@ -60,7 +60,7 @@ public class StartView extends JPanel {
 		
 		lbStartView = new JLabel("");
 		
-		lbStartView.setIcon(new ImageIcon("C:\\Users\\student\\Desktop\\무인발권기\\p4.PNG"));
+		lbStartView.setIcon(new ImageIcon("img\\p4.PNG"));
 		lbStartView.setBounds(36, 32, 730, 507);
 		add(lbStartView);
 		

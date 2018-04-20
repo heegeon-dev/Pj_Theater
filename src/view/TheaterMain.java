@@ -15,11 +15,10 @@ public class TheaterMain extends JFrame{
 		card = new CardLayout();
 		cardPanel = new JPanel(card);
 		
-		sv = new StartView();
-		mv = new MovieView();
-		
-		cardPanel.add("sv", sv);
-		cardPanel.add("mv", mv);
+
+		cardPanel.add("sv", new StartView());
+		cardPanel.add("mv", new MovieView());
+		cardPanel.add("bv",new BookingView());
 		add(cardPanel);
 		setSize(800, 600);
 		setVisible(true);
