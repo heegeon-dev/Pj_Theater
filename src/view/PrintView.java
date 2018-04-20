@@ -14,9 +14,9 @@ import java.util.ArrayList;
 import javax.swing.border.BevelBorder;
 	import javax.swing.border.LineBorder;
 
-	
+import model.PrintModel;
 
-	import java.awt.Font;
+import java.awt.Font;
 
 	public class PrintView extends JPanel {
 		JTextField tf_tel;
@@ -32,7 +32,7 @@ import javax.swing.border.BevelBorder;
 		int person;
 		int selectRoomnum;
 		
-//		PrintModel model;
+		PrintModel model;
 		
 		
 		public PrintView(String movietitle, String starttime, String endtime, ArrayList<String> selectedSeat,
@@ -60,7 +60,7 @@ import javax.swing.border.BevelBorder;
 		
 		void connectDB(){
 			try {
-//				model = new PrintModel();
+				model = new PrintModel();
 				System.out.println("DB연결 성공");
 			} catch (Exception e) {
 				System.out.println("DB연결 실패 : "+e.getMessage());
@@ -85,7 +85,7 @@ import javax.swing.border.BevelBorder;
 				}else if(evt == lblSend){
 					try {
 						String tel = tf_tel.getText();
-//						model.insertTel(tel);
+						model.insertTel(movietitle, starttime, endtime, selectedSeat, person, selectRoomnum, date, tel);
 					} catch (Exception e1) {
 						System.out.println("전화번호가 등록 되지 않았습니다. : "+e1.getMessage());
 						e1.printStackTrace();

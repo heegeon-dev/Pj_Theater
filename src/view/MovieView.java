@@ -378,7 +378,7 @@ public class MovieView extends JPanel implements ActionListener {
 						String endtime = st.nextToken();
 						String movietitle = st.nextToken();
 						String date = btnNewButton.getText();
-						int selectRoomnum = curCol;
+						int selectRoomnum = curRow+1;
 						TheaterMain.cardPanel.add("sv",new SeatView(movietitle,starttime,endtime,selectRoomnum,date));
 						TheaterMain.card.show(TheaterMain.cardPanel, "sv");
 					}

@@ -21,7 +21,8 @@ public class PrintModel {
 			int person, int selectRoomnum, String date, String tel) throws Exception {
 
 		con.setAutoCommit(false);
-
+		
+		System.out.println("시작");
 		String sql2 = "INSERT INTO point ( tel ) VALUES ( ? )";
 		System.out.println("point -> tel 실패");
 		PreparedStatement ps2 = con.prepareStatement(sql2);
@@ -32,6 +33,7 @@ public class PrintModel {
 			con.rollback();
 			return -1;
 		}
+		System.out.println("포인트 인설트");
 
 		String sql3 = "INSERT INTO payment ( paynum ) VALUES ( sq_pay_paynum.nextval )";
 		System.out.println("payment -> 실패");
@@ -42,6 +44,7 @@ public class PrintModel {
 			con.rollback();
 			return -1;
 		}
+		System.out.println("페이먼트 인설트");
 
 		String sql5 = "UPDATE screen SET SEATS = ? , SELECTEDNUM = ? , SELECTED = ?  WHERE SCREENNO = ? ";
 		System.out.println("screen -> 실패" + selectRoomnum);
@@ -58,7 +61,7 @@ public class PrintModel {
 			con.rollback();
 			return -1;
 		}
-
+		System.out.println("스크린 업데이트");
 		// String sql4 = "INSERT INTO movie ( movie_no, title, runingtime )
 		// VALUES ( sq_movie_movieno.nextval, ?, ? )";
 		// System.out.println("movie -> 실패");
@@ -95,6 +98,7 @@ public class PrintModel {
 			con.rollback();
 			return -1;
 		}
+		System.out.println("부킹 인설트");
 
 				
 		con.commit();
