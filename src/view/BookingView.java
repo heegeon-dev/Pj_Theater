@@ -25,6 +25,7 @@ public class BookingView extends JPanel implements ActionListener {
 	 
 	 
 	public BookingView() {
+		model = new BookingModel();
 		addLayout();
 		eventProc();
 	}
@@ -112,7 +113,7 @@ public class BookingView extends JPanel implements ActionListener {
 	}
 
 	public void getinfoByTel(String tel){
-		 list=model.getinfoByTel(tel);
+		list=model.getinfoByTel(tel);
 		 
 		 textField.setText(list.get(0).toString());
 		 textField_1.setText(list.get(1).toString());
