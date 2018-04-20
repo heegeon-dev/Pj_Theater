@@ -1,41 +1,52 @@
 package view;
 
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Dialog;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.Panel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
+import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 public class PayView extends JPanel {
 	JLabel[] lb = new JLabel[3];
 	JLabel[] img = new JLabel[3];
-	String movietitle, starttime,  endtime,date;
+	String movietitle, starttime, endtime, date;
 	ArrayList<String> selectedSeat;
 	int person;
 	int selectRoomnum;
+	JButton ok;
+	JDialog pay;
+
+	public PayView(String movietitle, String starttime, String endtime, ArrayList<String> selectedSeat, int person,
+			int selectRoomnum, String date) {
+		this.movietitle = movietitle;
+		this.starttime = starttime;
+		this.endtime = endtime;
+		this.selectedSeat = selectedSeat;
+		this.person = person;
+		this.selectRoomnum = selectRoomnum;
+		this.date = date;
+		addLayout();
+		eventProc();
+	}
 
 	void eventProc() {
 		MouseHandler hlr = new MouseHandler();
 		for (int i = 0; i < 3; i++)
 			lb[i].addMouseListener(hlr);
 	}
-
-	public PayView(String movietitle, String starttime, String endtime,ArrayList<String> selectedSeat, int person,int selectRoomnum,String date) {
-	this.movietitle = movietitle;
-	this.starttime = starttime;
-	this.endtime = endtime;
-	this.selectedSeat = selectedSeat;
-	this.person = person;
-	this.selectRoomnum=selectRoomnum;
-	this.date = date;
-	addLayout();
-	eventProc();
-}
 
 	void addLayout() {
 		setLayout(null);
@@ -65,40 +76,89 @@ public class PayView extends JPanel {
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			Object ob = e.getSource();
-			for (int i = 0; i < 3; i++) {
-				if (ob == lb[i]) {
-					System.out.println(lb[i].getText());
-					// 화면넘기기
-					TheaterMain.cardPanel.add("ptv", new PrintView(movietitle,starttime,endtime,selectedSeat,person,selectRoomnum,date));
-					TheaterMain.card.show(TheaterMain.cardPanel, "ptv");
-					
-				}
+			if (ob == lb[0]) {
+				pay = new payOfCredit();
+
+			} else if (ob == lb[1]) {
+				pay = new payOfCash();
+
+			} else if (ob == lb[2]) {
+				pay = new payOfPoint();
+
+			} else if (ob == ok) {
+				// 화면넘기기
+				pay.dispose();
+				TheaterMain.cardPanel.add("ptv",
+						new PrintView(movietitle, starttime, endtime, selectedSeat, person, selectRoomnum, date));
+				TheaterMain.card.show(TheaterMain.cardPanel, "ptv");
+
 			}
 
 		}
 
 	}
 
-	class payOfCredit extends JPanel {
-		payOfCredit(int person) {
-			setLayout(new FlowLayout());
-			setBackground(Color.red);
-			add(new JLabel(person+""));
+	class payOfCredit extends JDialog {
+		payOfCredit() {
+			setLayout(new BorderLayout());
+			JPanel center = new JPanel();
+			ok = new JButton("확인");
+			MouseHandler hlr = new MouseHandler();
+			ok.addMouseListener(hlr);
+			center.setLayout(new GridLayout(1, 2));
+			center.add(new JLabel("결제금액 : "));
+			center.add(new JLabel(person * 10000 + ""));
+//			center.add(new JLabel("받은금액 : "));
+//			center.add(new JTextField("백만원"));
+//			center.add(new JLabel("거스름돈 : "));
+//			center.add(new JLabel(1000000 - person * 10000 + ""));
+			add(center, BorderLayout.CENTER);
+			add(ok, BorderLayout.SOUTH);
 			setVisible(true);
-			setSize(600,400);
-			
+			setSize(300, 100);
 		}
 	}
 
-	class payOfCash extends JPanel {
-		payOfCash(int person) {
+	class payOfCash extends JDialog {
+		payOfCash() {
+			setLayout(new BorderLayout());
+			JPanel center = new JPanel();
+			ok = new JButton("확인");
+			MouseHandler hlr = new MouseHandler();
+			ok.addMouseListener(hlr);
+			center.setLayout(new GridLayout(3, 2));
+			center.add(new JLabel("결제금액 : "));
+			center.add(new JLabel(person * 10000 + ""));
+			center.add(new JLabel("받은금액 : "));
+			center.add(new JTextField("백만원"));
+			center.add(new JLabel("거스름돈 : "));
+			center.add(new JLabel(1000000 - person * 10000 + ""));
+			add(center, BorderLayout.CENTER);
+			add(ok, BorderLayout.SOUTH);
+			setVisible(true);
+			setSize(300, 200);
 
 		}
 	}
 
-	class payOfPoint extends JPanel {
-		payOfPoint(int person){
-			
+	class payOfPoint extends JDialog {
+		payOfPoint() {
+			setLayout(new BorderLayout());
+			JPanel center = new JPanel();
+			ok = new JButton("확인");
+			MouseHandler hlr = new MouseHandler();
+			ok.addMouseListener(hlr);
+			center.setLayout(new GridLayout(3, 2));
+			center.add(new JLabel("결제금액 : "));
+			center.add(new JLabel(person * 10000 + ""));
+			center.add(new JLabel("포인트 : "));
+			center.add(new JTextField("백만원"));
+			center.add(new JLabel("남은 포인트 : "));
+			center.add(new JLabel(1000000 - person * 10000 + ""));
+			add(center, BorderLayout.CENTER);
+			add(ok, BorderLayout.SOUTH);
+			setVisible(true);
+			setSize(300, 200);
 		}
 	}
 
