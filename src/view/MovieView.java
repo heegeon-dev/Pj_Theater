@@ -1,46 +1,89 @@
 package view;
 
 import javax.swing.*;
+import javax.swing.plaf.synth.SynthSplitPaneUI;
+
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Formatter;
 import java.util.Locale;
+import java.util.StringTokenizer;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
 
 public class MovieView extends JPanel implements ActionListener {
 
 	JButton btnNewButton, btnNewButton_1, button;
-	JLabel lbPrev;
+
 	int row = 3;
 	int col = 4;
-	JLabel[][] movieAll = new JLabel[row][col];
-	String[][] movieInfo = new String[row][col];
-	String today;
 
-	Calendar cal = Calendar.getInstance();
-	SimpleDateFormat format1 = new SimpleDateFormat("yyyy.MM.dd",Locale.KOREA);
+	int curRow;
+	int curCol;
+
+	SimpleDateFormat format1, format2, format3;
+
+	String movietitle, movieRunnigtime, movieStartTime;
+
+	// 각 영화정보를 담은 라벨. 그리고 그 라벨의 시간과 제목을 담을 String 배열
+	JLabel[][] movieAll = new JLabel[row][col];
+	int RoomNum;
+
+	ArrayList<ArrayList<String[]>> room = new ArrayList<ArrayList<String[]>>();
+	String today, thisday, cTime;
+
+	// runningtime을 띄워주기 위한 변수.
+	String starttime, endingtime, runningtime;
+
+	// 날짜를 띄워주기 위한 변수
+	Calendar curcal = Calendar.getInstance(); // 현재시간
+	Calendar thiscal = Calendar.getInstance();
+	Date date = new Date();
+
 	final String[] week = { "일", "월", "화", "수", "목", "금", "토" };
-	
+
+	// 상영관_영화제목_시간대 를 담은 파일을 받아올 변수
+
 	public MovieView() {
+
+		// 날짜버튼에 보여주기 위한 포멧
+		format1 = new SimpleDateFormat("yyyy.MM.dd", Locale.KOREA);
+		// 해당일의 파일읽어오기 위한
+		format2 = new SimpleDateFormat("MMdd", Locale.KOREA);
+		// 현재시간과 비교하기 위한 포멧
+		format3 = new SimpleDateFormat("HH:mm", Locale.KOREA);
+		cTime = format3.format(curcal.getTime()); // 현재시간
+		thisday = format2.format(curcal.getTime()); // 현재 날짜
+
+		starttime = "9:00";
+
 		addLayout();
 		eventProc();
-
-		for(int i =0;i<row;i++){
-			for(int j=0;j<col;j++){
-				movieInfo[i][j]=new String();
-			}
+		btnNewButton
+				.setText(format1.format(thiscal.getTime()) + " " + week[thiscal.get(Calendar.DAY_OF_WEEK) - 1] + "요일");
+		try {
+			showInfo();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		
-		btnNewButton.setText(format1.format(cal.getTime())+ " "+week[cal.get(Calendar.DAY_OF_WEEK) - 1] + "요일");
-		
-		
+
 	}
 
 	public void addLayout() {
@@ -147,12 +190,6 @@ public class MovieView extends JPanel implements ActionListener {
 		movieAll[2][3] = new JLabel("New label");
 		movieAll[2][3].setBounds(558, 10, 140, 100);
 		panel_4.add(movieAll[2][3]);
-		
-		lbPrev = new JLabel("");
-		lbPrev.setIcon(new ImageIcon("C:\\Users\\student\\Desktop\\무인발권기\\p6.PNG"));
-		lbPrev.setBounds(12, 596, 115, 52);
-		add(lbPrev);
-
 
 	}
 
@@ -160,35 +197,167 @@ public class MovieView extends JPanel implements ActionListener {
 		btnNewButton_1.addActionListener(this);
 		btnNewButton.addActionListener(this);
 		button.addActionListener(this);
+
 		MouseHandler mouseLsnr = new MouseHandler();
-		lbPrev.addMouseListener(mouseLsnr);
 
 		for (int i = 0; i < row; i++) {
 			for (int j = 0; j < col; j++) {
 				movieAll[i][j].addMouseListener(mouseLsnr);
-				movieInfo[i][j] = "";
+
 			}
 		}
 
+	}
+
+	public void readScadule() throws Exception {
+
+		// System.out.println(format2.format(curcal.getTime()) +
+		// ":"+format2.format(thiscal.getTime()));
+
+		Calendar temp = (Calendar) thiscal.clone();
+
+		for (RoomNum = 1; RoomNum < 4; RoomNum++) {
+
+			File f = new File("src\\" + RoomNum + "_" + thisday + ".txt");
+			BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(f), "euc-kr"));
+			// FileReader br = new FileReader(f);
+			// euc-kr을 utf-8로 바꿔서 읽는 코딩 필요!
+
+			starttime = "09:00";
+			endingtime = "";
+
+			String str;
+
+			ArrayList<String[]> movies = new ArrayList<String[]>();
+
+			while ((str = br.readLine()) != null) {
+				String[] movie = new String[3];
+				// System.out.println(str);
+				StringTokenizer st = new StringTokenizer(str, "/");
+				st.nextToken();
+
+				movie[0] = st.nextToken();
+				temp.setTime(format3.parse(starttime));
+				movie[1] = format3.format(temp.getTime());
+
+				movieRunnigtime = st.nextToken();
+
+				temp.add(Calendar.MINUTE, Integer.parseInt(movieRunnigtime));
+				endingtime = format3.format(temp.getTime());
+
+				temp.add(Calendar.MINUTE, 30);
+				starttime = format3.format(temp.getTime());
+
+				movie[2] = endingtime;
+				movies.add(movie);
+			}
+			room.add(movies);
+		}
+	}
+
+	public void showInfo() throws Exception {
+
+		readScadule();
+
+		for(int i = 0 ; i < 3 ; i++)
+			for(int j = 0 ; j< 4 ; j++)
+				movieAll[i][j].setText("");
+		
+	
+		Calendar temp = (Calendar) thiscal.clone();
+		// System.out.println(format2.format(curcal.getTime()) + ":"+
+		// format2.format(thiscal.getTime()));
+
+		if (format2.format(curcal.getTime()).equals(format2.format(thiscal.getTime()))) {
+			temp.setTime(format3.parse(cTime));
+
+		} else {
+			temp.setTime(format3.parse("09:00"));
+		}
+		RoomNum = 1;
+		for (; RoomNum < 4; RoomNum++) {
+			for (int j = 0, i = 0; j < room.get(RoomNum - 1).size() && i < 4; j++, i++) {
+				// 각 라벨에 영화 제목과 러닝타임 받아오기.
+				// System.out.println(RoomNum + "" + j);
+				// 각 라벨에 영화 시작시간과 끝나는 시간 보여주기					
+				
+				String[] movie = room.get(RoomNum - 1).get(j);
+
+//				 System.out.println(movie[0]);
+//				 System.out.println(movie[1]);
+//				 System.out.println(movie[2]);
+				
+				if (temp.getTime().compareTo(format3.parse(movie[1])) > 0) {
+					i--;
+					continue;
+				} else {
+					String movieInfo = "<html>" + movie[1] + "~" + movie[2] + "<br>" + movie[0] + "<br>"
+							+ movieRunnigtime + "</html>";
+					movieAll[RoomNum - 1][i].setText(movieInfo);
+				}
+			} // end of for roop_'j' :영화별 회차
+
+			for (int i = 0; i < movieAll.length; i++)
+				for (int j = 0; j < movieAll[i].length; j++)
+					if (movieAll[i][j].getText().equals("New label")) {
+						movieAll[i][j].setText("");
+						// 라밸 색 바꿔야함
+					}
+
+		}
+		RoomNum = 1;
+		room.clear();
+	}
+
+	// end of for roop_'roomNum' :각 상영관 전체
+
+	// for(int i=0 ; i <room.size() ; i ++)
+	// for(int j=0 ; j<room.get(i).size();j++){
+	// System.out.println(room.get(i).get(j)[0]);
+	// System.out.println(room.get(i).get(j)[1]);
+	// }
+	// end of showInfo()
+
+	public void viewClear() {
+		for (int i = 0; i < row; i++) {
+			for (int j = 0; j < col; j++) {
+				movieAll[i][j].setText("");
+			}
+		}
 	}
 
 	@Override // 액션리스너 for buttons
 	public void actionPerformed(ActionEvent e) {
 
 		// TODO Auto-generated method stub
-		System.out.println("button");
-
 		Object evt = e.getSource();
 
 		if (evt == btnNewButton_1) {
-			cal.add(Calendar.DATE,-1);
+			thiscal.add(Calendar.DATE, -1);
 			// 버튼을 setText( cal 값으로 )
-			btnNewButton.setText(format1.format(cal.getTime())+" " +week[cal.get(Calendar.DAY_OF_WEEK) - 1] + "요일");
-		}else if(evt == button){
-			cal.add(Calendar.DATE,+1);
-			btnNewButton.setText(format1.format(cal.getTime())+ " "+week[cal.get(Calendar.DAY_OF_WEEK) - 1] + "요일");
+			btnNewButton.setText(
+					format1.format(thiscal.getTime()) + " " + week[thiscal.get(Calendar.DAY_OF_WEEK) - 1] + "요일");
+			thisday = format2.format(thiscal.getTime());
+			try {
+				showInfo();
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		} else if (evt == button) {
+			thiscal.add(Calendar.DATE, 1);
+			btnNewButton.setText(
+					format1.format(thiscal.getTime()) + " " + week[thiscal.get(Calendar.DAY_OF_WEEK) - 1] + "요일");
+			thisday = format2.format(thiscal.getTime());
+			// viewClear();
+			try {
+				showInfo();
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			// TODO Auto-generated catch block
 		}
-
 
 	}
 
@@ -197,11 +366,18 @@ public class MovieView extends JPanel implements ActionListener {
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			Object evt = e.getSource();
-			if(evt == lbPrev){
-				//JOptionPane.showMessageDialog(null, "1번 다음으로 넘어갑니다.");
-				TheaterMain.cardPanel.setSize(800,600);
-				TheaterMain.card.previous(TheaterMain.cardPanel);
+
+			for (int i = 0; i < row; i++) {
+				for (int j = 0; j < col; j++) {
+					if (evt == movieAll[i][j]) {
+						curRow = i;
+						curCol = j;
+					}
+				}
 			}
+
+			System.out.println("label");
+
 		}
 
 	}
