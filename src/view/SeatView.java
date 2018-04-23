@@ -32,10 +32,11 @@ public class SeatView extends Panel implements MouseListener {
 	int selectRoomnum;
 	JLabel lblPrev,lblCancel,lblOK;
 	private JLabel lblCGVimg;
+	int numOfDay;
 	
 
 
-	public SeatView(String movietitle, String starttime, String endtime , int selectRoomnum,String date) {
+	public SeatView(String movietitle, String starttime, String endtime , int selectRoomnum,String date,int numOfDay) {
 		addLayout();
 		initSeat();
 		eventProc();
@@ -45,6 +46,7 @@ public class SeatView extends Panel implements MouseListener {
 		this.endtime = endtime;
 		this.selectRoomnum = selectRoomnum;
 		this.date = date;
+		this.numOfDay = numOfDay;
 		
 		lblCGVimg = new JLabel("New label");
 		lblCGVimg.setIcon(new ImageIcon("img\\p1.PNG"));
@@ -194,7 +196,7 @@ public class SeatView extends Panel implements MouseListener {
 			System.out.println(movietitle+" "+starttime+" "+endtime+" "+" "+person);
 			Collections.sort(selectedSeat);
 			System.out.println(selectedSeat.toString());
-			TheaterMain.cardPanel.add("pv", new PayView(movietitle,starttime,endtime,selectedSeat,person,selectRoomnum,date));
+			TheaterMain.cardPanel.add("pv", new PayView(movietitle,starttime,endtime,selectedSeat,person,selectRoomnum,date,numOfDay));
 			TheaterMain.card.show(TheaterMain.cardPanel, "pv");
 		} else if (lblPrev == ob) {
 			TheaterMain.card.show(TheaterMain.cardPanel, "mv");

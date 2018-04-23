@@ -36,7 +36,6 @@ public class MovieView extends JPanel implements ActionListener {
 	JLabel lblPrev;
 	int row = 3;
 	int col = 4;
-
 	int curRow;
 	int curCol;
 
@@ -271,10 +270,10 @@ public class MovieView extends JPanel implements ActionListener {
 			ArrayList<String[]> movies = new ArrayList<String[]>();
 
 			while ((str = br.readLine()) != null) {
-				String[] movie = new String[3];
+				String[] movie = new String[4];
 				// System.out.println(str);
 				StringTokenizer st = new StringTokenizer(str, "/");
-				st.nextToken();
+				movie[3] = st.nextToken();
 
 				movie[0] = st.nextToken();
 				temp.setTime(format3.parse(starttime));
@@ -331,7 +330,7 @@ public class MovieView extends JPanel implements ActionListener {
 					i--;
 					continue;
 				} else {
-					String movieInfo = "<html>" + movie[1] + "~" + movie[2] + "<br>" + movie[0] + "<br>"
+					String movieInfo = "<html>" + movie[3]+"회차"+"<br>" + movie[1] + "~" + movie[2] + "<br>" + movie[0] + "<br>"
 							+ movieRunnigtime + "</html>";
 					movieAll[RoomNum - 1][i].setText(movieInfo);
 				}
@@ -414,12 +413,14 @@ public class MovieView extends JPanel implements ActionListener {
 						curCol = j;
 						String movieinfo = movieAll[i][j].getText();
 						StringTokenizer st = new StringTokenizer(movieinfo, "<html><br></html>~");
+						int numOfDay = Integer.parseInt(String.valueOf(st.nextToken().charAt(0)));
 						String starttime = st.nextToken();
 						String endtime = st.nextToken();
 						String movietitle = st.nextToken();
 						String date = btnNewButton.getText();
 						int selectRoomnum = curRow+1;
-						TheaterMain.cardPanel.add("stv",new SeatView(movietitle,starttime,endtime,selectRoomnum,date));
+						System.out.println(numOfDay);
+						TheaterMain.cardPanel.add("stv",new SeatView(movietitle,starttime,endtime,selectRoomnum,date,numOfDay));
 						TheaterMain.card.show(TheaterMain.cardPanel, "stv");
 					}
 				}

@@ -38,7 +38,7 @@ import javax.swing.SwingConstants;
 		
 		
 		public PrintView(String movietitle, String starttime, String endtime, ArrayList<String> selectedSeat,
-				int person, int selectRoomnum,String date) {
+				int person, int selectRoomnum,String date,int numOfDay) {
 			this.movietitle = movietitle;
 			this.starttime = starttime;
 			this.endtime = endtime;

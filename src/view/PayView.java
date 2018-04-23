@@ -34,9 +34,10 @@ public class PayView extends JPanel {
 	private JLabel label;
 	private JLabel label_1;
 	private JLabel label_2;
+	int numOfDay;
 
 	public PayView(String movietitle, String starttime, String endtime, ArrayList<String> selectedSeat, int person,
-			int selectRoomnum, String date) {
+			int selectRoomnum, String date,int numOfDay) {
 		setBackground(Color.WHITE);
 		this.movietitle = movietitle;
 		this.starttime = starttime;
@@ -45,6 +46,7 @@ public class PayView extends JPanel {
 		this.person = person;
 		this.selectRoomnum = selectRoomnum;
 		this.date = date;
+		this.numOfDay = numOfDay;
 		addLayout();
 		eventProc();
 	}
@@ -153,7 +155,7 @@ public class PayView extends JPanel {
 				// 화면넘기기
 				pay.dispose();
 				TheaterMain.cardPanel.add("ptv",
-						new PrintView(movietitle, starttime, endtime, selectedSeat, person, selectRoomnum, date));
+						new PrintView(movietitle, starttime, endtime, selectedSeat, person, selectRoomnum, date,numOfDay));
 				TheaterMain.card.show(TheaterMain.cardPanel, "ptv");
 
 			} else if (ob == lblPrev)
