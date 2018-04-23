@@ -88,7 +88,11 @@ public class SeatView extends Panel implements MouseListener {
 		try {
 			selectedSeats = model.MakeSeatlist(selectRoomnum, date, numOfDay);
 		} catch (SQLException e) {
-			System.out.println("좌석 리스트 가져오기 실패");
+			System.out.println("좌석 초기화 실패");
+		} catch (NullPointerException e){
+			System.out.println("예약된 좌석이 없음");
+			return ;
+			
 		}
 		
 		

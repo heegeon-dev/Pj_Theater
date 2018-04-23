@@ -31,6 +31,8 @@ public class SeatModel {
 		ps.setInt(3, numOfDay);
 		ResultSet rs = ps.executeQuery();
 		rs.next();
+		if(rs == null)
+			return null;
 		StringTokenizer st = new StringTokenizer(rs.getString("SELECTED"),"$,");
 		String[] seatList = new String[rs.getInt("SELECTEDNUM")];
 
