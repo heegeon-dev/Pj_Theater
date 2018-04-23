@@ -3,6 +3,7 @@ package view;
 import java.awt.Panel;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.StringTokenizer;
@@ -11,6 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
+import model.SeatModel;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -25,7 +27,7 @@ public class SeatView extends Panel implements MouseListener {
 	JLabel[][] seat = new JLabel[8][10];
 	int person, cnt;
 	JLabel lb_person, movieinfo;
-	ArrayList<String> selectedSeats;
+	String[] selectedSeats;
 	boolean[][] booking = new boolean[8][10];
 	ArrayList<String> selectedSeat;
 	String movietitle,starttime, endtime,date;
@@ -33,6 +35,7 @@ public class SeatView extends Panel implements MouseListener {
 	JLabel lblPrev,lblCancel,lblOK;
 	private JLabel lblCGVimg;
 	int numOfDay;
+	SeatModel model;
 	
 
 
@@ -47,6 +50,7 @@ public class SeatView extends Panel implements MouseListener {
 		this.selectRoomnum = selectRoomnum;
 		this.date = date;
 		this.numOfDay = numOfDay;
+		model = new SeatModel();
 		
 		lblCGVimg = new JLabel("New label");
 		lblCGVimg.setIcon(new ImageIcon("img\\p1.PNG"));
@@ -73,20 +77,27 @@ public class SeatView extends Panel implements MouseListener {
 		// String
 
 		// testcase
-		selectedSeats = new ArrayList<String>();
-		selectedSeats.add("$1,2");
-		selectedSeats.add("$4,5");
-		selectedSeats.add("$2,3");
-		selectedSeats.add("$1,1");
+//		selectedSeats = new ArrayList<String>();
+//		selectedSeats.add("$1,2");
+//		selectedSeats.add("$4,5");
+//		selectedSeats.add("$2,3");
+//		selectedSeats.add("$1,1");
 
 		// endofTestcase
 
+		try {
+			selectedSeats = model.MakeSeatlist(selectRoomnum, date, numOfDay);
+		} catch (SQLException e) {
+			System.out.println("좌석 리스트 가져오기 실패");
+		}
+		
+		
 		for (int i = 0; i < 8; i++)
 			for (int j = 0; j < 10; j++)
 				booking[i][j] = false;
 
-		for (int i = 0; i < selectedSeats.size(); i++) {
-			StringTokenizer st = new StringTokenizer(selectedSeats.get(i), ",$");
+		for (int i = 0; i < selectedSeats.length; i++) {
+			StringTokenizer st = new StringTokenizer(selectedSeats[i], ",$");
 			int row = Integer.parseInt(st.nextToken());
 			int col = Integer.parseInt(st.nextToken());
 			seat[col][row].setBackground(Color.black);

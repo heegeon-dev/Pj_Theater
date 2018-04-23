@@ -23,9 +23,12 @@ public class SeatModel {
 
 	}
 	
-	public String[] MakeSeatlist(int screenno) throws SQLException{
-		String sql = "SELECT SELECTEDNUM,SELECTED FROM screen WHERE screenno = " + screenno;
+	public String[] MakeSeatlist(int screenno,String moviedate , int numOfDay) throws SQLException{
+		String sql = "SELECT SELECTEDNUM,SELECTED FROM screen WHERE screenno = ? and moviedate = ? and numofday = ? ";
 		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setInt(1, screenno);
+		ps.setString(2, moviedate);
+		ps.setInt(3, numOfDay);
 		ResultSet rs = ps.executeQuery();
 		rs.next();
 		StringTokenizer st = new StringTokenizer(rs.getString("SELECTED"),"$,");
