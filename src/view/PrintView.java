@@ -17,6 +17,7 @@ import javax.swing.border.BevelBorder;
 import model.PrintModel;
 
 import java.awt.Font;
+import javax.swing.SwingConstants;
 
 	public class PrintView extends JPanel {
 		JTextField tf_tel;
@@ -33,6 +34,7 @@ import java.awt.Font;
 		int selectRoomnum;
 		
 		PrintModel model;
+		JLabel lblPrev;
 		
 		
 		public PrintView(String movietitle, String starttime, String endtime, ArrayList<String> selectedSeat,
@@ -56,6 +58,7 @@ import java.awt.Font;
 			lblMobile.addMouseListener(mc);
 			tf_tel.addMouseListener(mc);
 			lblSend.addMouseListener(mc);
+			lblPrev.addMouseListener(mc);
 		}
 		
 		void connectDB(){
@@ -91,14 +94,10 @@ import java.awt.Font;
 						e1.printStackTrace();
 					}
 					JOptionPane.showMessageDialog(null, "전화번호가 전송되었습니다.");
+				}else if (evt == lblPrev){
+					TheaterMain.card.show(TheaterMain.cardPanel, "pv");
 				}
-//				if(evt == lbTicketBuy){
-//					//JOptionPane.showMessageDialog(null, "1번 다음으로 넘어갑니다.");
-//					Mainview.cardPanel.setSize(1000,800);
-//					Mainview.card.show(Mainview.cardPanel, "mv");
-//				}else if( evt == lbBookingPrint ){
-//					JOptionPane.showMessageDialog(null, "2번 다음으로 넘어갑니다.");
-//				}
+
 			}
 		}	// inner class
 		
@@ -251,6 +250,12 @@ import java.awt.Font;
 			lblSend.setIcon(new ImageIcon("img\\p10.PNG"));
 			lblSend.setBounds(727, 197, 42, 21);
 			add(lblSend);
+			
+			lblPrev = new JLabel("");
+			lblPrev.setIcon(new ImageIcon("img\\p6.PNG"));
+			lblPrev.setHorizontalAlignment(SwingConstants.LEFT);
+			lblPrev.setBounds(611, 466, 110, 35);
+			add(lblPrev);
 			lblSend.setVisible(false);
 		}// end of addLayout
 	}// end of class

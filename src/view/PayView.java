@@ -18,19 +18,26 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.ImageIcon;
+import java.awt.SystemColor;
 
 public class PayView extends JPanel {
 	JLabel[] lb = new JLabel[3];
 	JLabel[] img = new JLabel[3];
+	JLabel lblPrev, lblCash,lblCredit,lblPoint;
 	String movietitle, starttime, endtime, date;
 	ArrayList<String> selectedSeat;
 	int person;
 	int selectRoomnum;
 	JButton ok;
 	JDialog pay;
+	private JLabel label;
+	private JLabel label_1;
+	private JLabel label_2;
 
 	public PayView(String movietitle, String starttime, String endtime, ArrayList<String> selectedSeat, int person,
 			int selectRoomnum, String date) {
+		setBackground(Color.WHITE);
 		this.movietitle = movietitle;
 		this.starttime = starttime;
 		this.endtime = endtime;
@@ -44,31 +51,88 @@ public class PayView extends JPanel {
 
 	void eventProc() {
 		MouseHandler hlr = new MouseHandler();
-		for (int i = 0; i < 3; i++)
-			lb[i].addMouseListener(hlr);
+		label.addMouseListener(hlr);
+		label_1.addMouseListener(hlr);
+		label_2.addMouseListener(hlr);
+		lblPrev.addMouseListener(hlr);
 	}
 
 	void addLayout() {
 		setLayout(null);
 
 		JLabel lblNewLabel = new JLabel("결제 수단을 선택해 주세요");
-		lblNewLabel.setFont(new Font("맑은 고딕", Font.BOLD, 33));
-		lblNewLabel.setBounds(50, 80, 700, 80);
+		lblNewLabel.setBackground(Color.WHITE);
+		lblNewLabel.setFont(new Font("맑은 고딕", Font.BOLD, 40));
+		lblNewLabel.setBounds(58, 79, 700, 80);
 		lblNewLabel.setVerticalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		add(lblNewLabel);
-		for (int i = 0; i < 3; i++) {
-			img[i] = new JLabel("image");
-			img[i].setBounds(200 + 150 * i, 207, 160, 121);
-			lb[i] = new JLabel();
-			lb[i].setBounds(200 + 150 * i, 398, 160, 121);
-			add(img[i]);
-			add(lb[i]);
-		}
+		
+		lblPrev = new JLabel("");
+		lblPrev.setIcon(new ImageIcon("img\\p6.PNG"));
+		lblPrev.setBounds(625, 489, 110, 35);
+		add(lblPrev);
+		
+		lblCash = new JLabel("");
+		lblCash.setBackground(Color.WHITE);
+		lblCash.setIcon(new ImageIcon("img\\p18.PNG"));
+		lblCash.setBounds(344, 207, 117, 121);
+		add(lblCash);
+		
+		lblCredit = new JLabel("");
+		lblCredit.setBackground(Color.WHITE);
+		lblCredit.setIcon(new ImageIcon("img\\p19.PNG"));
+		lblCredit.setBounds(200, 207, 129, 121);
+		add(lblCredit);
+		
+		lblPoint = new JLabel("");
+		lblPoint.setBackground(Color.WHITE);
+		lblPoint.setIcon(new ImageIcon("img\\p20.PNG"));
+		lblPoint.setBounds(473, 207, 144, 121);
+		add(lblPoint);
+		
+		label = new JLabel("신용 카드 결제");
+		label.setFont(new Font("맑은 고딕", Font.BOLD, 17));
+		label.setBackground(Color.LIGHT_GRAY);
+		label.setForeground(Color.DARK_GRAY);
+		label.setHorizontalAlignment(SwingConstants.CENTER);
+		label.setBounds(200, 328, 129, 121);
+		add(label);
+		
+		label_1 = new JLabel("현금 결제");
+		label_1.setFont(new Font("맑은 고딕", Font.BOLD, 17));
+		label_1.setBackground(Color.LIGHT_GRAY);
+		label_1.setForeground(Color.DARK_GRAY);
+		label_1.setHorizontalAlignment(SwingConstants.CENTER);
+		label_1.setBounds(344, 328, 117, 121);
+		add(label_1);
+		
+		label_2 = new JLabel("포인트 결제");
+		label_2.setFont(new Font("맑은 고딕", Font.BOLD, 17));
+		label_2.setBackground(Color.LIGHT_GRAY);
+		label_2.setForeground(Color.DARK_GRAY);
+		label_2.setHorizontalAlignment(SwingConstants.CENTER);
+		label_2.setBounds(473, 328, 144, 121);
+		add(label_2);
+		
+		
+//		for (int i = 0; i < 3; i++) {
+//			img[i] = new JLabel("");
+//			img[i].setBounds(200 + 150 * i, 207, 160, 121);
+//			lb[i] = new JLabel();
+//			lb[i].setBounds(200 + 150 * i, 398, 160, 121);
+//			lb[i].setHorizontalAlignment(SwingConstants.CENTER);
+//			lb[i].setForeground(Color.DARK_GRAY);
+//			add(img[i]);
+//			add(lb[i]);
+//		}
+//		img[0].setIcon(new ImageIcon("C:\\Users\\student\\Desktop\\무인발권기\\16.PNG"));
+//		img[1].setIcon(new ImageIcon("C:\\Users\\student\\Desktop\\무인발권기\\14.PNG"));
+//		img[2].setIcon(new ImageIcon("C:\\Users\\student\\Desktop\\무인발권기\\17.PNG"));
 
-		lb[0].setText("포인트 결제");
-		lb[1].setText("현금결제");
-		lb[2].setText("신용카드 결제");
+//		lb[0].setText("신용카드 결제");
+//		lb[1].setText("현금결제");
+//		lb[2].setText("포인트 결제");
 
 	}
 
@@ -76,13 +140,13 @@ public class PayView extends JPanel {
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			Object ob = e.getSource();
-			if (ob == lb[0]) {
+			if (ob == label) {
 				pay = new payOfCredit();
 
-			} else if (ob == lb[1]) {
+			} else if (ob == label_1) {
 				pay = new payOfCash();
 
-			} else if (ob == lb[2]) {
+			} else if (ob == label_2) {
 				pay = new payOfPoint();
 
 			} else if (ob == ok) {
@@ -92,8 +156,8 @@ public class PayView extends JPanel {
 						new PrintView(movietitle, starttime, endtime, selectedSeat, person, selectRoomnum, date));
 				TheaterMain.card.show(TheaterMain.cardPanel, "ptv");
 
-			}
-
+			} else if (ob == lblPrev)
+				TheaterMain.card.show(TheaterMain.cardPanel, "stv");
 		}
 
 	}

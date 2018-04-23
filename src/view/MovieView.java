@@ -26,11 +26,14 @@ import java.util.Locale;
 import java.util.StringTokenizer;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
+import javax.swing.border.LineBorder;
+import java.awt.SystemColor;
+import java.awt.Font;
 
 public class MovieView extends JPanel implements ActionListener {
 
 	JButton btnNewButton, btnNewButton_1, button;
-
+	JLabel lblPrev;
 	int row = 3;
 	int col = 4;
 
@@ -91,105 +94,142 @@ public class MovieView extends JPanel implements ActionListener {
 
 		JPanel panel = new JPanel();
 		panel.setBounds(12, 10, 750, 550);
-		panel.setBackground(Color.PINK);
+		panel.setBackground(Color.WHITE);
 		add(panel);
 		panel.setLayout(null);
 
 		JPanel panel_1 = new JPanel();
+		panel_1.setBackground(Color.WHITE);
 		panel_1.setBounds(12, 10, 720, 100);
 		panel.add(panel_1);
 		panel_1.setLayout(null);
 
 		btnNewButton = new JButton("New button");
-		btnNewButton.setBounds(285, 10, 235, 79);
+		btnNewButton.setFont(new Font("맑은 고딕", Font.PLAIN, 20));
+		btnNewButton.setForeground(Color.LIGHT_GRAY);
+		btnNewButton.setBackground(Color.DARK_GRAY);
+		btnNewButton.setBounds(285, 45, 235, 45);
 		panel_1.add(btnNewButton);
 
 		btnNewButton_1 = new JButton("<");
-		btnNewButton_1.setBounds(206, 12, 67, 75);
+		btnNewButton_1.setForeground(Color.LIGHT_GRAY);
+		btnNewButton_1.setFont(new Font("맑은 고딕", Font.BOLD, 20));
+		btnNewButton_1.setBackground(Color.DARK_GRAY);
+		btnNewButton_1.setBounds(207, 45, 67, 45);
 		panel_1.add(btnNewButton_1);
 
 		button = new JButton(">");
-		button.setBounds(539, 12, 75, 75);
+		button.setForeground(Color.LIGHT_GRAY);
+		button.setFont(new Font("맑은 고딕", Font.BOLD, 20));
+		button.setBackground(Color.DARK_GRAY);
+		button.setBounds(539, 45, 75, 45);
 		panel_1.add(button);
-
-		JPanel panel_5 = new JPanel();
-		panel_5.setBounds(29, 10, 101, 79);
-		panel_1.add(panel_5);
+		
+		JLabel lblCGVimg = new JLabel("");
+		lblCGVimg.setIcon(new ImageIcon("img\\p1.PNG"));
+		lblCGVimg.setBounds(12, 10, 130, 87);
+		panel_1.add(lblCGVimg);
 
 		JPanel panel_2 = new JPanel();
-		panel_2.setBounds(12, 126, 720, 130);
+		panel_2.setBackground(Color.WHITE);
+		panel_2.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		panel_2.setBounds(12, 126, 720, 110);
 		panel.add(panel_2);
 		panel_2.setLayout(null);
 
-		JLabel lblNewLabel = new JLabel("제1관");
-		lblNewLabel.setBounds(12, 10, 50, 100);
-		panel_2.add(lblNewLabel);
+		JLabel lblTheater1img = new JLabel("1");
+		lblTheater1img.setIcon(new ImageIcon("img\\p11.PNG"));
+		lblTheater1img.setBounds(1, 10, 61, 90);
+		panel_2.add(lblTheater1img);
 
 		movieAll[0][0] = new JLabel("New label");
 		movieAll[0][0].setBounds(66, 10, 140, 100);
+		movieAll[0][0].setHorizontalAlignment(JLabel.CENTER);
 		panel_2.add(movieAll[0][0]);
 
 		movieAll[0][1] = new JLabel("New label");
 		movieAll[0][1].setBounds(230, 10, 140, 100);
+		movieAll[0][1].setHorizontalAlignment(JLabel.CENTER);
 		panel_2.add(movieAll[0][1]);
 
 		movieAll[0][2] = new JLabel("New label");
 		movieAll[0][2].setBounds(398, 10, 140, 100);
+		movieAll[0][2].setHorizontalAlignment(JLabel.CENTER);
 		panel_2.add(movieAll[0][2]);
 
 		movieAll[0][3] = new JLabel("New label");
 		movieAll[0][3].setBounds(556, 10, 140, 100);
+		movieAll[0][3].setHorizontalAlignment(JLabel.CENTER);
 		panel_2.add(movieAll[0][3]);
 
 		JPanel panel_3 = new JPanel();
-		panel_3.setBounds(12, 266, 720, 130);
+		panel_3.setBackground(Color.WHITE);
+		panel_3.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		panel_3.setBounds(12, 246, 720, 110);
 		panel.add(panel_3);
 		panel_3.setLayout(null);
 
-		JLabel label = new JLabel("제2관");
-		label.setBounds(12, 10, 50, 100);
-		panel_3.add(label);
-
 		movieAll[1][0] = new JLabel("New label");
 		movieAll[1][0].setBounds(66, 10, 140, 100);
+		movieAll[1][0].setHorizontalAlignment(JLabel.CENTER);
 		panel_3.add(movieAll[1][0]);
 
 		movieAll[1][1] = new JLabel("New label");
 		movieAll[1][1].setBounds(221, 10, 140, 100);
+		movieAll[1][1].setHorizontalAlignment(JLabel.CENTER);
 		panel_3.add(movieAll[1][1]);
 
 		movieAll[1][2] = new JLabel("New label");
 		movieAll[1][2].setBounds(397, 10, 140, 100);
+		movieAll[1][2].setHorizontalAlignment(JLabel.CENTER);
 		panel_3.add(movieAll[1][2]);
 
 		movieAll[1][3] = new JLabel("New label");
 		movieAll[1][3].setBounds(558, 10, 140, 100);
+		movieAll[1][3].setHorizontalAlignment(JLabel.CENTER);
 		panel_3.add(movieAll[1][3]);
+		
+		JLabel lblTheater2img = new JLabel("2");
+		lblTheater2img.setIcon(new ImageIcon("img\\p12.PNG"));
+		lblTheater2img.setBounds(1, 10, 61, 90);
+		panel_3.add(lblTheater2img);
 
 		JPanel panel_4 = new JPanel();
-		panel_4.setBounds(12, 407, 720, 130);
+		panel_4.setBackground(Color.WHITE);
+		panel_4.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		panel_4.setBounds(12, 366, 720, 110);
 		panel.add(panel_4);
 		panel_4.setLayout(null);
 
-		JLabel label_1 = new JLabel("제3관");
-		label_1.setBounds(12, 10, 50, 100);
-		panel_4.add(label_1);
-
 		movieAll[2][0] = new JLabel("New label");
 		movieAll[2][0].setBounds(66, 10, 140, 100);
+		movieAll[2][0].setHorizontalAlignment(JLabel.CENTER);
 		panel_4.add(movieAll[2][0]);
 
 		movieAll[2][1] = new JLabel("New label");
 		movieAll[2][1].setBounds(218, 10, 140, 100);
+		movieAll[2][1].setHorizontalAlignment(JLabel.CENTER);
 		panel_4.add(movieAll[2][1]);
 
 		movieAll[2][2] = new JLabel("New label");
 		movieAll[2][2].setBounds(396, 10, 140, 100);
+		movieAll[2][2].setHorizontalAlignment(JLabel.CENTER);
 		panel_4.add(movieAll[2][2]);
 
 		movieAll[2][3] = new JLabel("New label");
 		movieAll[2][3].setBounds(558, 10, 140, 100);
+		movieAll[2][3].setHorizontalAlignment(JLabel.CENTER);
 		panel_4.add(movieAll[2][3]);
+		
+		JLabel lblTheater3img = new JLabel("3");
+		lblTheater3img.setIcon(new ImageIcon("img\\p13.PNG"));
+		lblTheater3img.setBounds(2, 10, 61, 90);
+		panel_4.add(lblTheater3img);
+		
+		lblPrev = new JLabel("prev");
+		lblPrev.setIcon(new ImageIcon("img\\p6.PNG"));
+		lblPrev.setBounds(621, 486, 110, 35);
+		panel.add(lblPrev);
 
 	}
 
@@ -197,8 +237,8 @@ public class MovieView extends JPanel implements ActionListener {
 		btnNewButton_1.addActionListener(this);
 		btnNewButton.addActionListener(this);
 		button.addActionListener(this);
-
 		MouseHandler mouseLsnr = new MouseHandler();
+		lblPrev.addMouseListener(mouseLsnr);
 
 		for (int i = 0; i < row; i++) {
 			for (int j = 0; j < col; j++) {
@@ -379,10 +419,13 @@ public class MovieView extends JPanel implements ActionListener {
 						String movietitle = st.nextToken();
 						String date = btnNewButton.getText();
 						int selectRoomnum = curRow+1;
-						TheaterMain.cardPanel.add("sv",new SeatView(movietitle,starttime,endtime,selectRoomnum,date));
-						TheaterMain.card.show(TheaterMain.cardPanel, "sv");
+						TheaterMain.cardPanel.add("stv",new SeatView(movietitle,starttime,endtime,selectRoomnum,date));
+						TheaterMain.card.show(TheaterMain.cardPanel, "stv");
 					}
 				}
+			}
+			if ( evt == lblPrev){
+				TheaterMain.card.show(TheaterMain.cardPanel, "sv");
 			}
 
 
@@ -390,5 +433,4 @@ public class MovieView extends JPanel implements ActionListener {
 		}
 
 	}
-
 }

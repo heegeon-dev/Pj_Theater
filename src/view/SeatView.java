@@ -8,16 +8,20 @@ import java.util.Collections;
 import java.util.StringTokenizer;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
 
 import java.awt.Color;
 import java.awt.Font;
 import javax.swing.JButton;
+import javax.swing.ImageIcon;
+import java.awt.SystemColor;
+import javax.swing.JTextArea;
 
 public class SeatView extends Panel implements MouseListener {
 
-	JButton jb_minus, jb_plus, jb_pre, jb_next;
+	JButton jb_minus, jb_plus;
 	JLabel[][] seat = new JLabel[8][10];
 	int person, cnt;
 	JLabel lb_person, movieinfo;
@@ -26,6 +30,9 @@ public class SeatView extends Panel implements MouseListener {
 	ArrayList<String> selectedSeat;
 	String movietitle,starttime, endtime,date;
 	int selectRoomnum;
+	JLabel lblPrev,lblCancel,lblOK;
+	private JLabel lblCGVimg;
+	
 
 
 	public SeatView(String movietitle, String starttime, String endtime , int selectRoomnum,String date) {
@@ -38,6 +45,22 @@ public class SeatView extends Panel implements MouseListener {
 		this.endtime = endtime;
 		this.selectRoomnum = selectRoomnum;
 		this.date = date;
+		
+		lblCGVimg = new JLabel("New label");
+		lblCGVimg.setIcon(new ImageIcon("img\\p1.PNG"));
+		lblCGVimg.setBounds(622, 51, 127, 96);
+		add(lblCGVimg);
+		
+		JTextArea textArea = new JTextArea();
+		textArea.setFont(new Font("맑은 고딕", Font.BOLD, 13));
+		textArea.setText("좌석 및 인원을 \r\n선택하시고,\r\n확인 버튼을 \r\n눌러주세요.");
+		textArea.setForeground(Color.DARK_GRAY);
+		textArea.setBounds(622, 155, 182, 103);
+		add(textArea);
+		
+		
+		
+		
 		selectedSeat = new ArrayList<String>();
 	}
 
@@ -73,8 +96,9 @@ public class SeatView extends Panel implements MouseListener {
 	private void eventProc() {
 		jb_minus.addMouseListener(this);
 		jb_plus.addMouseListener(this);
-		jb_pre.addMouseListener(this);
-		jb_next.addMouseListener(this);
+		lblOK.addMouseListener(this);
+		lblPrev.addMouseListener(this);
+		lblCancel.addMouseListener(this);
 		for (int i = 0; i < seat.length; i++)
 			for (int j = 0; j < seat[i].length; j++)
 				seat[i][j].addMouseListener(this);
@@ -95,7 +119,7 @@ public class SeatView extends Panel implements MouseListener {
 		add(jl_Screen);
 
 		movieinfo = new JLabel("New label");
-		movieinfo.setBounds(628, 75, 139, 130);
+		movieinfo.setBounds(622, 232, 139, 66);
 		add(movieinfo);
 
 		lb_person = new JLabel("0");
@@ -104,21 +128,32 @@ public class SeatView extends Panel implements MouseListener {
 		add(lb_person);
 
 		jb_minus = new JButton("-");
-		jb_minus.setBounds(605, 304, 54, 47);
+		jb_minus.setBackground(SystemColor.controlHighlight);
+		jb_minus.setFont(new Font("맑은 고딕", Font.BOLD, 13));
+		jb_minus.setBounds(622, 308, 40, 40);
 		add(jb_minus);
 
 		jb_plus = new JButton("+");
+		jb_plus.setBackground(SystemColor.controlHighlight);
+		jb_plus.setFont(new Font("맑은 고딕", Font.BOLD, 9));
 
-		jb_plus.setBounds(724, 304, 53, 47);
+		jb_plus.setBounds(717, 308, 40, 40);
 		add(jb_plus);
-
-		jb_pre = new JButton("이전");
-		jb_pre.setBounds(605, 477, 75, 59);
-		add(jb_pre);
-
-		jb_next = new JButton("다음");
-		jb_next.setBounds(702, 477, 75, 59);
-		add(jb_next);
+		
+		lblPrev = new JLabel("New label");
+		lblPrev.setIcon(new ImageIcon("img\\p6.PNG"));
+		lblPrev.setBounds(667, 500, 110, 35);
+		add(lblPrev);
+		
+		lblOK = new JLabel("ok");
+		lblOK.setIcon(new ImageIcon("img\\p17.PNG"));
+		lblOK.setBounds(628, 355, 60, 40);
+		add(lblOK);
+		
+		lblCancel = new JLabel("New label");
+		lblCancel.setIcon(new ImageIcon("img\\p16.PNG"));
+		lblCancel.setBounds(692, 355, 60, 40);
+		add(lblCancel);
 
 		for (int i = 0; i < seat.length; i++)
 			for (int j = 0; j < seat[i].length; j++) {
@@ -155,12 +190,16 @@ public class SeatView extends Panel implements MouseListener {
 				person++;
 				lb_person.setText(String.valueOf(person));
 			}
-		} else if (jb_next == ob) {
+		} else if (lblOK == ob) {
 			System.out.println(movietitle+" "+starttime+" "+endtime+" "+" "+person);
 			Collections.sort(selectedSeat);
 			System.out.println(selectedSeat.toString());
 			TheaterMain.cardPanel.add("pv", new PayView(movietitle,starttime,endtime,selectedSeat,person,selectRoomnum,date));
 			TheaterMain.card.show(TheaterMain.cardPanel, "pv");
+		} else if (lblPrev == ob) {
+			TheaterMain.card.show(TheaterMain.cardPanel, "mv");
+		} else if (lblCancel == ob){
+			JOptionPane.showMessageDialog(null, "클릭한거 취소 구현해야함");
 		}
 
 		for (int i = 0; i < seat.length; i++)
