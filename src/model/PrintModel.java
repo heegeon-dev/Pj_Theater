@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.StringTokenizer;
 
 import db.TheaterDB;
 
@@ -89,7 +90,11 @@ public class PrintModel {
 //		}else{
 			String sql7 = "UPDATE screen SET selected = ? WHERE SCREENID = ?";
 			PreparedStatement ps7 = con.prepareStatement(sql7);
-			ps7.setString(1, selectedSeat.toString());
+			System.out.println(selectedSeat.toString());
+			StringTokenizer str = new StringTokenizer(selectedSeat.toString(), ",");
+			int count = str.countTokens();
+			ps7.setString(1, Integer.toString(count));
+//			ps7.setString(1, selectedSeat.toString());
 			moviedate = String.valueOf(date.charAt(5))+date.charAt(6)+date.charAt(8)+date.charAt(9);
 			screenId = selectRoomnum+"#"+moviedate+"#"+numOfDay;
 			ps7.setString(2, screenId);
