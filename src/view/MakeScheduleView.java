@@ -13,7 +13,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -28,6 +34,8 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
+import com.sun.javafx.css.PseudoClassState;
+
 import model.ScheduleModel;
 
 import javax.swing.JScrollBar;
@@ -39,8 +47,7 @@ import java.awt.Font;
 import javax.swing.ScrollPaneConstants;
 import java.awt.Color;
 
-public class MakeScheduleView implements ActionListener {
-	JFrame frame;
+public class MakeScheduleView extends JPanel implements ActionListener {
 	private JTable scheduleJTable;
 	private JTable movieJTable;
 	private JTextField selectDate;
@@ -59,7 +66,6 @@ public class MakeScheduleView implements ActionListener {
 
 	public MakeScheduleView() {
 		model = new ScheduleModel();
-		frame = new JFrame();
 
 		columnNames.add("Movie_no");
 		columnNames.add("Movie_Title");
@@ -68,16 +74,16 @@ public class MakeScheduleView implements ActionListener {
 		addLayout();
 		eventProc();
 
-		frame.setSize(800, 600);
-		frame.setVisible(true);
+		setSize(800, 600);
+		setVisible(true);
 	}
 
 	public void addLayout() {
 
-		frame.getContentPane().setLayout(new GridLayout(0, 1, 0, 0));
+		setLayout(new GridLayout(0, 1, 0, 0));
 
 		JPanel panel = new JPanel();
-		frame.getContentPane().add(panel);
+		add(panel);
 		panel.setLayout(null);
 
 		roomNum = new JLabel("1");
@@ -101,10 +107,10 @@ public class MakeScheduleView implements ActionListener {
 		selectDate.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				selectDate.setText(" ");
-				
+
 			}
 		});
-		
+
 		JLabel SelectDate = new JLabel("선택일자");
 		SelectDate.setBounds(154, 37, 69, 15);
 		panel.add(SelectDate);
@@ -120,7 +126,7 @@ public class MakeScheduleView implements ActionListener {
 		showButton.setBounds(627, 52, 97, 23);
 		panel.add(showButton);
 
-		frame.getContentPane().add(panel);
+		add(panel);
 
 		JPanel panel_1 = new JPanel();
 		panel_1.setBounds(12, 125, 760, 300);
@@ -209,7 +215,7 @@ public class MakeScheduleView implements ActionListener {
 			int temp = Integer.parseInt(roomNum.getText()) - 1;
 			roomNum.setText(String.valueOf(temp));
 
-		}  else if (evt == btnInsert) {
+		} else if (evt == btnInsert) {
 			try {
 				fileInput();
 				JOptionPane.showMessageDialog(null, "스케줄이 입력되었습니다.");
@@ -221,42 +227,43 @@ public class MakeScheduleView implements ActionListener {
 		}
 	}
 
-	//입력한 영화관, 날짜, 그리고 ScheduleJTable의 값을 가져와서 file에 데이터 입력하기. 
+	// 입력한 영화관, 날짜, 그리고 ScheduleJTable의 값을 가져와서 file에 데이터 입력하기.
 	public void fileInput() throws Exception {
-	
+
 		String thisday = selectDate.getText();
 		int RoomNum = Integer.parseInt(roomNum.getText());
 
-		//for (; RoomNum < 4; RoomNum++) {
-		
-			String fileName = "C:\\workspace\\Pj_Theater_backup\\scedule\\" + RoomNum + "_" + thisday.trim() + ".txt";
+		// for (; RoomNum < 4; RoomNum++) {
 
-			BufferedWriter bw = new BufferedWriter(new FileWriter(fileName));
+		String fileName = "scedule\\" + RoomNum + "_" + thisday.trim() + ".txt";
 
-			ArrayList movieInfo = new ArrayList();
-			int ctn=1;
-			for (int i = 0;i<scheduleTablemodel.data.size(); i++) {
-				ArrayList movie =  (ArrayList) scheduleTablemodel.data.get(i);
-				String movieOne = ctn+","+movie.get(1)+","+movie.get(2)+"\n";
-				movieInfo.add(movieOne);
-				//movieInfo.add(scheduleTablemodel.data.get(i)+"\n");
-				
-				bw.write(String.valueOf(movieInfo.get(i)));
-				ctn++;
-			}
-			bw.close();
-			System.out.println(scheduleTablemodel.data.size()); 
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName), "euc-kr"));
+
+		ArrayList movieInfo = new ArrayList();
+		int ctn = 1;
+		for (int i = 0; i < scheduleTablemodel.data.size(); i++) {
+			ArrayList movie = (ArrayList) scheduleTablemodel.data.get(i);
+			String movieOne = ctn + "/" + movie.get(1) + "/" + movie.get(2) + "\n";
+			movieInfo.add(movieOne);
+			// movieInfo.add(scheduleTablemodel.data.get(i)+"\n");
+
+			bw.write(String.valueOf(movieInfo.get(i)));
+			model.initScreen(RoomNum, thisday, ctn);
+			ctn++;
 		}
-	//}
-	
-	public void clearSchedule(){
+
+		bw.close();
+		System.out.println(scheduleTablemodel.data.size());
+	}
+	// }
+
+	public void clearSchedule() {
 		roomNum.setText("1");
 		selectDate.setText("ex.0412");
-		//scheduleTablemodel.data = new ArrayList();
+		// scheduleTablemodel.data = new ArrayList();
 		scheduleTablemodel.data.clear();
 		scheduleTablemodel.fireTableDataChanged();
 	}
-	
 
 	class MyTableModel extends AbstractTableModel {
 
@@ -291,8 +298,8 @@ public class MakeScheduleView implements ActionListener {
 
 	} // end of INNER CLASS_'MyTableModel'
 
-		public static void main(String[] args) {
-			MakeScheduleView view = new MakeScheduleView();
+	public static void main(String[] args) {
+		MakeScheduleView view = new MakeScheduleView();
 
-		}
+	}
 }

@@ -31,7 +31,7 @@ import javax.swing.SwingConstants;
 		String movietitle, starttime,  endtime,date;
 		ArrayList<String> selectedSeat;
 		int person;
-		int selectRoomnum;
+		int selectRoomnum, numOfDay;
 		
 		PrintModel model;
 		JLabel lblPrev;
@@ -46,6 +46,7 @@ import javax.swing.SwingConstants;
 			this.person = person;
 			this.selectRoomnum = selectRoomnum;
 			this.date= date;
+			this.numOfDay = numOfDay;
 			setBackground(Color.WHITE);
 			addLayout();
 			eventProc();
@@ -88,7 +89,7 @@ import javax.swing.SwingConstants;
 				}else if(evt == lblSend){
 					try {
 						String tel = tf_tel.getText();
-						model.insertTel(movietitle, starttime, endtime, selectedSeat, person, selectRoomnum, date, tel);
+						model.insertTel(movietitle, starttime, endtime, selectedSeat, person, selectRoomnum, date, tel, numOfDay);
 					} catch (Exception e1) {
 						System.out.println("전화번호가 등록 되지 않았습니다. : "+e1.getMessage());
 						e1.printStackTrace();

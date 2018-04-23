@@ -20,9 +20,12 @@ public class TheaterMain extends JFrame{
 		cardPanel.add("mv", new MovieView());
 		cardPanel.add("bv",new BookingView());
 		add(cardPanel);
+		
+//		add(new MakeScheduleView());
 		setSize(800, 600);
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
 		
 	}
 	
