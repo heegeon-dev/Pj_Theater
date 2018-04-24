@@ -92,17 +92,17 @@ public class LoginView extends JPanel {
 		add(lblLoginDesc);
 		
 		lblUserIcon = new JLabel("");
-		lblUserIcon.setIcon(new ImageIcon("C:\\Users\\student\\Desktop\\무인발권기\\16.PNG"));
+		lblUserIcon.setIcon(new ImageIcon("C:img\\p21.PNG"));
 		lblUserIcon.setBounds(230, 232, 38, 37);
 		add(lblUserIcon);
 		
 		lblPw = new JLabel("");
-		lblPw.setIcon(new ImageIcon("C:\\Users\\student\\Desktop\\무인발권기\\17.PNG"));
+		lblPw.setIcon(new ImageIcon("img\\p22.PNG"));
 		lblPw.setBounds(230, 271, 38, 37);
 		add(lblPw);
 		
 		lblLoginButton = new JLabel("");
-		lblLoginButton.setIcon(new ImageIcon("C:\\Users\\student\\Desktop\\무인발권기\\21.PNG"));
+		lblLoginButton.setIcon(new ImageIcon("img\\p23.PNG"));
 		lblLoginButton.setBounds(230, 318, 325, 52);
 		add(lblLoginButton);
 		

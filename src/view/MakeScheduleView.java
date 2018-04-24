@@ -46,6 +46,7 @@ import java.awt.Component;
 import java.awt.Font;
 import javax.swing.ScrollPaneConstants;
 import java.awt.Color;
+import javax.swing.ImageIcon;
 
 public class MakeScheduleView extends JPanel implements ActionListener {
 	private JTable scheduleJTable;
@@ -63,6 +64,7 @@ public class MakeScheduleView extends JPanel implements ActionListener {
 	Vector<String> columnNames = new Vector<String>();
 
 	MyTableModel movieTablemodel, scheduleTablemodel;
+	private JLabel lblLogout;
 
 	public MakeScheduleView() {
 		model = new ScheduleModel();
@@ -167,6 +169,11 @@ public class MakeScheduleView extends JPanel implements ActionListener {
 		lb_screen_no.setBounds(24, 37, 69, 15);
 		panel.add(lb_screen_no);
 		
+		lblLogout = new JLabel("");
+		lblLogout.setIcon(new ImageIcon("img\\p24.PNG"));
+		lblLogout.setBounds(658, 458, 114, 45);
+		panel.add(lblLogout);
+		
 		
 
 	}
@@ -183,6 +190,13 @@ public class MakeScheduleView extends JPanel implements ActionListener {
 				// 컬럼에 상관없이 어떤 컬럼이든 해당 열의 값을 가져와야하기 때문에 row만 중요.
 				ArrayList temp = (ArrayList) movieTablemodel.data.get(row);
 				schduling(temp);
+			}
+		});
+		lblLogout.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				TheaterMain.card.show(TheaterMain.cardPanel2, "lv");
+				clearSchedule();
+				
 			}
 		});
 		btnPrevious.addActionListener(this);
@@ -252,6 +266,8 @@ public class MakeScheduleView extends JPanel implements ActionListener {
 	public void fileInput() throws Exception {
 
 		String thisday = selectDate.getText();
+		
+		
 		int RoomNum = Integer.parseInt(roomNum.getText());
 
 		// for (; RoomNum < 4; RoomNum++) {
@@ -276,6 +292,7 @@ public class MakeScheduleView extends JPanel implements ActionListener {
 		bw.close();
 		System.out.println(scheduleTablemodel.data.size());
 	}
+	
 	// }
 
 	public void clearSchedule() {
@@ -284,6 +301,8 @@ public class MakeScheduleView extends JPanel implements ActionListener {
 		// scheduleTablemodel.data = new ArrayList();
 		scheduleTablemodel.data.clear();
 		scheduleTablemodel.fireTableDataChanged();
+		movieTablemodel.data.clear();
+		movieTablemodel.fireTableDataChanged();
 	}
 
 	class MyTableModel extends AbstractTableModel {
