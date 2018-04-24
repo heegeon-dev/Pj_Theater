@@ -9,25 +9,25 @@ import db.TheaterDB;
 
 public class PayModel {
 	Connection con;
-	
-	public PayModel(){
+
+	public PayModel() {
 		try {
-			con=TheaterDB.getConnection();
-		} catch (Exception e){
+			con = TheaterDB.getConnection();
+		} catch (Exception e) {
 			System.out.println("PayModel DB연결 실패");
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	public int getOfPoint(String tel) throws SQLException {
-		String sql = "select point from point where" + tel ;
+
 		
+		String sql = "select point from point where tel = ?";
 		PreparedStatement ps = con.prepareStatement(sql);
-		
+		ps.setString(1, tel);
 		ResultSet rs = ps.executeQuery();
 		rs.next();
-		
 		return rs.getInt("point");
 	}
 

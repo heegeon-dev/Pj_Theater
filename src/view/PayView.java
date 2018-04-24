@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -37,7 +38,7 @@ public class PayView extends JPanel {
 	int selectRoomnum;
 	JButton ok;
 	JDialog pay;
-	JTextField tf_tel,tf_Money;
+	JTextField tf_tel, tf_Money;
 	JLabel lb_point, lb_Left;
 	private JLabel label;
 	private JLabel label_1;
@@ -172,9 +173,17 @@ public class PayView extends JPanel {
 
 			} else if (ob == ok) {
 				// 화면넘기기
+				if (optionOf.equals("cash") && Integer.parseInt((lb_Left.getText())) < 0) {
+					JOptionPane.showMessageDialog(null, "돈이 부족합니다.");
+					return;
+				}else if(optionOf.equals("point") && Integer.parseInt((lb_Left.getText())) < 0){
+					JOptionPane.showMessageDialog(null, "포인트가 부족합니다.");
+					return;
+				}
+
 				pay.dispose();
 				TheaterMain.cardPanel.add("ptv", new PrintView(movietitle, starttime, endtime, selectedSeat, person,
-						selectRoomnum, date, numOfDay,optionOf,point));
+						selectRoomnum, date, numOfDay, optionOf, point));
 				TheaterMain.card.show(TheaterMain.cardPanel, "ptv");
 
 			} else if (ob == lblPrev)
@@ -191,16 +200,18 @@ public class PayView extends JPanel {
 
 			if (ob == tf_tel) {
 				try {
+					System.out.println(tf_tel.getText());
 					point = model.getOfPoint(tf_tel.getText());
+					System.out.println(point);
 					lb_point.setText(String.valueOf(point));
-					lb_Left.setText(String.valueOf(point-person*10000));
+					lb_Left.setText(String.valueOf(point - person * 10000));
 				} catch (SQLException e1) {
 					System.out.println("포인트를 불러올 수 없습니다.");
 					e1.printStackTrace();
 				}
-			}else if(ob == tf_Money){
-				lb_Left.setText(String.valueOf((Integer.parseInt(tf_Money.getText())-person*10000)));
-				
+			} else if (ob == tf_Money) {
+				lb_Left.setText(String.valueOf((Integer.parseInt(tf_Money.getText()) - person * 10000)));
+
 			}
 
 		}
@@ -281,6 +292,5 @@ public class PayView extends JPanel {
 			setSize(300, 200);
 		}
 	}
-
 
 }
