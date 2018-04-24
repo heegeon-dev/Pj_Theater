@@ -23,21 +23,22 @@ public class SeatModel {
 
    }
    
-   public String[] MakeSeatlist(int screenno,String moviedate , int numOfDay) throws SQLException{
-      String sql = "SELECT SELECTEDNUM,SELECTED FROM screen WHERE screenno = ? and moviedate = ? and numofday = ? ";
+   public ArrayList<String> MakeSeatlist(int screenno,String moviedate , int numOfDay) throws SQLException{
+      String date = moviedate.substring(5, 7)+moviedate.substring(8,10);
+	  String sql = "SELECT SELECTEDNUM,SELECTED FROM screen WHERE screenid= ?" ;
+      System.out.println(sql);
       PreparedStatement ps = con.prepareStatement(sql);
-      ps.setInt(1, screenno);
-      ps.setString(2, moviedate);
-      ps.setInt(3, numOfDay);
+      ps.setString(1,screenno+"#"+date+"#"+numOfDay);
       ResultSet rs = ps.executeQuery();
       rs.next();
-      if(rs == null)
-         return null;
-      StringTokenizer st = new StringTokenizer(rs.getString("SELECTED"),"$,");
-      String[] seatList = new String[rs.getInt("SELECTEDNUM")];
 
-      for(int i = 0 ; i < rs.getInt("SELECTEDNUM");i++)
-         seatList[i] = st.nextToken();
+      StringTokenizer st = new StringTokenizer(rs.getString("SELECTED"),"$,");
+      ArrayList<String> seatList = new ArrayList<String>();
+
+      for(int i = 0 ; i < rs.getInt("SELECTEDNUM");i++){
+    	  seatList.add( st.nextToken());
+    	  System.out.println(seatList.get(i));
+      }
       return seatList;   
    }
    

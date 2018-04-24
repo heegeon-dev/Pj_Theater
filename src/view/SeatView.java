@@ -27,9 +27,8 @@ public class SeatView extends Panel implements MouseListener {
    JLabel[][] seat = new JLabel[8][10];
    int person, cnt;
    JLabel lb_person, movieinfo;
-   String[] selectedSeats;
    boolean[][] booking = new boolean[8][10];
-   ArrayList<String> selectedSeat;
+   ArrayList<String> selectedSeat,selectedSeats;
    String movietitle,starttime, endtime,date;
    int selectRoomnum;
    JLabel lblPrev,lblCancel,lblOK;
@@ -40,16 +39,19 @@ public class SeatView extends Panel implements MouseListener {
 
 
    public SeatView(String movietitle, String starttime, String endtime , int selectRoomnum,String date,int numOfDay) {
+	   selectedSeat = new ArrayList<String>();
+	   selectedSeats = new ArrayList<String>();
+	   model=new SeatModel();
+	   this.movietitle = movietitle;
+	   this.starttime = starttime;
+	   this.endtime = endtime;
+	   this.selectRoomnum = selectRoomnum;
+	   this.date = date;
+	   this.numOfDay = numOfDay;
       addLayout();
       initSeat();
       eventProc();
       movieinfo.setText("<html>" + movietitle + "<br>" + starttime + "</html>");
-      this.movietitle = movietitle;
-      this.starttime = starttime;
-      this.endtime = endtime;
-      this.selectRoomnum = selectRoomnum;
-      this.date = date;
-      this.numOfDay = numOfDay;
       model = new SeatModel();
       
       lblCGVimg = new JLabel("New label");
@@ -67,7 +69,6 @@ public class SeatView extends Panel implements MouseListener {
       
       
       
-      selectedSeat = new ArrayList<String>();
    }
 
    private void initSeat() {
@@ -86,11 +87,14 @@ public class SeatView extends Panel implements MouseListener {
       // endofTestcase
 
       try {
+    
          selectedSeats = model.MakeSeatlist(selectRoomnum, date, numOfDay);
       } catch (SQLException e) {
          System.out.println("좌석 초기화 실패");
+         e.printStackTrace();
       } catch (NullPointerException e){
          System.out.println("예약된 좌석이 없음");
+         e.printStackTrace();
          return ;
          
       }
@@ -100,12 +104,12 @@ public class SeatView extends Panel implements MouseListener {
          for (int j = 0; j < 10; j++)
             booking[i][j] = false;
 
-      for (int i = 0; i < selectedSeats.length; i++) {
-         StringTokenizer st = new StringTokenizer(selectedSeats[i], ",$");
-         int row = Integer.parseInt(st.nextToken());
-         int col = Integer.parseInt(st.nextToken());
-         seat[col][row].setBackground(Color.black);
-         booking[col][row] = true;
+      for (int i = 0; i < selectedSeats.size(); i++) {
+         int row = Integer.parseInt(String.valueOf(selectedSeats.get(i).charAt(0)))-1;
+         int col = Integer.parseInt(String.valueOf(selectedSeats.get(i).charAt(1)))-1;
+         System.out.println(col+""+row);
+         seat[row][col].setBackground(Color.black);
+         booking[row][col] = true;
       }
 
    }
