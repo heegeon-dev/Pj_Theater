@@ -31,12 +31,4 @@ public class PayModel {
 		return rs.getInt("point");
 	}
 
-	public void PayOfPoint(String tel,int money) throws SQLException {
-		String sql = "update point set point = ? where tel = ?";
-		PreparedStatement ps = con.prepareStatement(sql);
-		ps.setInt(1, money);
-		ps.setString(2,tel);
-		ps.executeUpdate();
-		
-	}
 }

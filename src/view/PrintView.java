@@ -28,7 +28,7 @@ import javax.swing.SwingConstants;
 		JLabel lblPrintInfoLine1,lblPrintInfoLine2,lblPrintInfoLine3,lblPrintInfoLine4;
 		JLabel lblPrintInfoTitle,lblPrintInfoDate,lblPrintInfoTime,lblPrintInfoTheaterNum,lblPrintInfoSeat;
 		JLabel lblPrintInfoMoney,lblPrintInfoMember,lblPrintInfoPoint;
-		String movietitle, starttime,  endtime,date;
+		String movietitle, starttime,  endtime,date,optionOf;
 		ArrayList<String> selectedSeat;
 		int person;
 		int selectRoomnum, numOfDay;
@@ -38,7 +38,7 @@ import javax.swing.SwingConstants;
 		
 		
 		public PrintView(String movietitle, String starttime, String endtime, ArrayList<String> selectedSeat,
-				int person, int selectRoomnum,String date,int numOfDay) {
+				int person, int selectRoomnum,String date,int numOfDay,String optionOf) {
 			this.movietitle = movietitle;
 			this.starttime = starttime;
 			this.endtime = endtime;
@@ -47,6 +47,7 @@ import javax.swing.SwingConstants;
 			this.selectRoomnum = selectRoomnum;
 			this.date= date;
 			this.numOfDay = numOfDay;
+			this.optionOf = optionOf;
 			setBackground(Color.WHITE);
 			addLayout();
 			eventProc();

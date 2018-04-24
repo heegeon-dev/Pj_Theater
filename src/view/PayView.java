@@ -33,17 +33,18 @@ public class PayView extends JPanel {
 	JLabel lblPrev, lblCash, lblCredit, lblPoint;
 	String movietitle, starttime, endtime, date;
 	ArrayList<String> selectedSeat;
-	int person,point,money;
+	int person, point, money;
 	int selectRoomnum;
 	JButton ok;
 	JDialog pay;
-	JTextField tf_tel;
-	JLabel lb_point;
+	JTextField tf_tel,tf_Money;
+	JLabel lb_point, lb_Left;
 	private JLabel label;
 	private JLabel label_1;
 	private JLabel label_2;
 	int numOfDay;
 	PayModel model;
+	String optionOf;
 
 	public PayView(String movietitle, String starttime, String endtime, ArrayList<String> selectedSeat, int person,
 			int selectRoomnum, String date, int numOfDay) {
@@ -158,25 +159,22 @@ public class PayView extends JPanel {
 		public void mouseClicked(MouseEvent e) {
 			Object ob = e.getSource();
 			if (ob == label) {
+				optionOf = "credit";
 				pay = new payOfCredit();
 
 			} else if (ob == label_1) {
+				optionOf = "cash";
 				pay = new payOfCash();
 
 			} else if (ob == label_2) {
+				optionOf = "point";
 				pay = new payOfPoint();
 
 			} else if (ob == ok) {
 				// 화면넘기기
-				try {
-					model.PayOfPoint(tf_tel.getText(),point-person*1000);
-				} catch (SQLException e1) {
-					System.out.println("포인트계산실패");
-					e1.printStackTrace();
-				}
 				pay.dispose();
 				TheaterMain.cardPanel.add("ptv", new PrintView(movietitle, starttime, endtime, selectedSeat, person,
-						selectRoomnum, date, numOfDay));
+						selectRoomnum, date, numOfDay,optionOf));
 				TheaterMain.card.show(TheaterMain.cardPanel, "ptv");
 
 			} else if (ob == lblPrev)
@@ -195,10 +193,14 @@ public class PayView extends JPanel {
 				try {
 					point = model.getOfPoint(tf_tel.getText());
 					lb_point.setText(String.valueOf(point));
+					lb_Left.setText(String.valueOf(point-person*10000));
 				} catch (SQLException e1) {
 					System.out.println("포인트를 불러올 수 없습니다.");
 					e1.printStackTrace();
 				}
+			}else if(ob == tf_Money){
+				lb_Left.setText(String.valueOf((Integer.parseInt(tf_Money.getText())-person*10000)));
+				
 			}
 
 		}
@@ -232,14 +234,18 @@ public class PayView extends JPanel {
 			JPanel center = new JPanel();
 			ok = new JButton("확인");
 			MouseHandler hlr = new MouseHandler();
+			enterkeylistener ehlr = new enterkeylistener();
 			ok.addMouseListener(hlr);
 			center.setLayout(new GridLayout(3, 2));
 			center.add(new JLabel("결제금액 : "));
 			center.add(new JLabel(person * 10000 + ""));
 			center.add(new JLabel("받은금액 : "));
-			center.add(new JTextField("백만원"));
+			tf_Money = new JTextField();
+			center.add(tf_Money);
+			tf_Money.addActionListener(ehlr);
 			center.add(new JLabel("거스름돈 : "));
-			center.add(new JLabel(1000000 - person * 10000 + ""));
+			lb_Left = new JLabel();
+			center.add(lb_Left);
 			add(center, BorderLayout.CENTER);
 			add(ok, BorderLayout.SOUTH);
 			setVisible(true);
@@ -251,25 +257,30 @@ public class PayView extends JPanel {
 	class payOfPoint extends JDialog {
 		payOfPoint() {
 			setLayout(new BorderLayout());
+
 			JPanel center = new JPanel();
 			ok = new JButton("확인");
 			MouseHandler hlr = new MouseHandler();
 			ok.addMouseListener(hlr);
+			enterkeylistener ehlr = new enterkeylistener();
 			center.setLayout(new GridLayout(4, 2));
 			center.add(new JLabel("전화번호:"));
 			tf_tel = new JTextField();
+			tf_tel.addActionListener(ehlr);
 			center.add(tf_tel);
 			center.add(new JLabel("결제금액 : "));
 			center.add(new JLabel(person * 10000 + ""));
 			center.add(new JLabel("포인트 : "));
 			center.add(lb_point);
 			center.add(new JLabel("남은 포인트 : "));
-			center.add(new JLabel((point - person * 10000) + ""));
+			lb_Left = new JLabel();
+			center.add(lb_Left);
 			add(center, BorderLayout.CENTER);
 			add(ok, BorderLayout.SOUTH);
 			setVisible(true);
 			setSize(300, 200);
 		}
 	}
+
 
 }
