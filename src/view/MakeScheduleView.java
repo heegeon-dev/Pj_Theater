@@ -51,8 +51,8 @@ public class MakeScheduleView extends JPanel implements ActionListener {
 	private JTable scheduleJTable;
 	private JTable movieJTable;
 	private JTextField selectDate;
-	private JTextField txtList;
-	JButton showButton, btnInsert;
+	private JLabel movieList;
+	JButton btnShow, btnInsert;
 	ScheduleModel model;
 
 	JLabel roomNum;
@@ -83,25 +83,34 @@ public class MakeScheduleView extends JPanel implements ActionListener {
 		setLayout(new GridLayout(0, 1, 0, 0));
 
 		JPanel panel = new JPanel();
+	//	panel.setForeground(Color.WHITE);
+		panel.setBackground(Color.WHITE);
 		add(panel);
 		panel.setLayout(null);
 
 		roomNum = new JLabel("1");
-		roomNum.setBounds(53, 51, 40, 38);
+		roomNum.setFont(new Font("새굴림", Font.PLAIN, 12));
+		roomNum.setBounds(81, 67, 22, 23);
 		panel.add(roomNum);
 
-		btnPrevious = new JButton("previous");
-		btnPrevious.setBounds(33, 18, 97, 23);
+		btnPrevious = new JButton("<");
+		btnPrevious.setFont(new Font("맑은 고딕", Font.BOLD, 10));
+		btnPrevious.setForeground(Color.WHITE);
+		btnPrevious.setBackground(Color.DARK_GRAY);
+		btnPrevious.setBounds(24, 68, 44, 23);
 		panel.add(btnPrevious);
 
-		btnNext = new JButton("next");
-		btnNext.setBounds(33, 92, 97, 23);
+		btnNext = new JButton(">");
+		btnNext.setFont(new Font("맑은 고딕", Font.BOLD, 10));
+		btnNext.setForeground(Color.WHITE);
+		btnNext.setBackground(Color.DARK_GRAY);
+		btnNext.setBounds(101, 68, 47, 23);
 		panel.add(btnNext);
 
 		selectDate = new JTextField();
 		selectDate.setForeground(Color.GRAY);
 		selectDate.setText("ex.0412");
-		selectDate.setBounds(154, 64, 132, 51);
+		selectDate.setBounds(180, 64, 106, 51);
 		panel.add(selectDate);
 		selectDate.setColumns(10);
 		selectDate.addMouseListener(new MouseAdapter() {
@@ -111,20 +120,23 @@ public class MakeScheduleView extends JPanel implements ActionListener {
 			}
 		});
 
-		JLabel SelectDate = new JLabel("선택일자");
-		SelectDate.setBounds(154, 37, 69, 15);
-		panel.add(SelectDate);
+		JLabel movieDate = new JLabel("선택일자");
+		movieDate.setFont(new Font("바탕체", Font.PLAIN, 12));
+		movieDate.setBounds(180, 37, 69, 15);
+		panel.add(movieDate);
+		
 
-		txtList = new JTextField();
-		txtList.setBounds(424, 38, 196, 51);
-		txtList.setFont(new Font("굴림", Font.PLAIN, 20));
-		txtList.setText("영화 List");
-		txtList.setColumns(10);
-		panel.add(txtList);
+		movieList = new JLabel();
+		movieList.setBounds(483, 43, 132, 51);
+		movieList.setFont(new Font("돋움", Font.BOLD | Font.ITALIC, 20));
+		movieList.setText("MOVIE LIST");
+		panel.add(movieList);
 
-		showButton = new JButton("SHOW");
-		showButton.setBounds(627, 52, 97, 23);
-		panel.add(showButton);
+		btnShow = new JButton("SHOW");
+		btnShow.setForeground(Color.WHITE);
+		btnShow.setBackground(Color.DARK_GRAY);
+		btnShow.setBounds(627, 59, 97, 23);
+		panel.add(btnShow);
 
 		add(panel);
 
@@ -144,14 +156,23 @@ public class MakeScheduleView extends JPanel implements ActionListener {
 		panel_1.add(new JScrollPane(movieJTable));
 
 		btnInsert = new JButton("INSERT");
+		btnInsert.setForeground(Color.WHITE);
+		btnInsert.setBackground(Color.DARK_GRAY);
 		btnInsert.setBounds(294, 64, 82, 51);
 
 		panel.add(btnInsert);
+		
+		JLabel lb_screen_no = new JLabel("선택영화관");
+		lb_screen_no.setFont(new Font("바탕", Font.PLAIN, 12));
+		lb_screen_no.setBounds(24, 37, 69, 15);
+		panel.add(lb_screen_no);
+		
+		
 
 	}
 
 	public void eventProc() {
-		showButton.addActionListener(this);
+		btnShow.addActionListener(this);
 
 		// movieJTable에 마우스리스너 이벤트걸기,
 		// 클릭될때마다 클릭된 행을 가져와서 왼쪽 JTable에 띄우기.
@@ -200,7 +221,7 @@ public class MakeScheduleView extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		Object evt = e.getSource();
 
-		if (evt == showButton) {
+		if (evt == btnShow) {
 			getMovieInfo();
 
 		} else if (evt == btnNext) {
