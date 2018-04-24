@@ -18,6 +18,9 @@ import model.PrintModel;
 
 import java.awt.Font;
 import javax.swing.SwingConstants;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 	public class PrintView extends JPanel {
 		JTextField tf_tel;
@@ -29,6 +32,7 @@ import javax.swing.SwingConstants;
 		JLabel lblPrintInfoTitle,lblPrintInfoDate,lblPrintInfoTime,lblPrintInfoTheaterNum,lblPrintInfoSeat;
 		JLabel lblPrintInfoMoney,lblPrintInfoMember,lblPrintInfoPoint;
 		String movietitle, starttime,  endtime,date,optionOf;
+		JButton bt_cancel;
 		ArrayList<String> selectedSeat;
 		int person;
 		int selectRoomnum, numOfDay;
@@ -72,6 +76,7 @@ import javax.swing.SwingConstants;
 			tf_tel.addMouseListener(mc);
 			lblSend.addMouseListener(mc);
 			lblPrev.addMouseListener(mc);
+			bt_cancel.addMouseListener(mc);
 		}
 		
 		void connectDB(){
@@ -109,6 +114,8 @@ import javax.swing.SwingConstants;
 					JOptionPane.showMessageDialog(null, "전화번호가 전송되었습니다.");
 				}else if (evt == lblPrev){
 					TheaterMain.card.show(TheaterMain.cardPanel, "pv");
+				}else if (evt == bt_cancel){
+					TheaterMain.card.show(TheaterMain.cardPanel, "sv");
 				}
 
 			}
@@ -269,6 +276,11 @@ import javax.swing.SwingConstants;
 			lblPrev.setHorizontalAlignment(SwingConstants.LEFT);
 			lblPrev.setBounds(611, 466, 110, 35);
 			add(lblPrev);
+			
+			bt_cancel = new JButton("처음으로");
+			
+			bt_cancel.setBounds(672, 10, 97, 23);
+			add(bt_cancel);
 			lblSend.setVisible(false);
 		}// end of addLayout
 	}// end of class
