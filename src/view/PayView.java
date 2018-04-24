@@ -174,7 +174,7 @@ public class PayView extends JPanel {
 				// 화면넘기기
 				pay.dispose();
 				TheaterMain.cardPanel.add("ptv", new PrintView(movietitle, starttime, endtime, selectedSeat, person,
-						selectRoomnum, date, numOfDay,optionOf));
+						selectRoomnum, date, numOfDay,optionOf,point));
 				TheaterMain.card.show(TheaterMain.cardPanel, "ptv");
 
 			} else if (ob == lblPrev)

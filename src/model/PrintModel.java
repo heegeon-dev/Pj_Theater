@@ -23,15 +23,16 @@ public class PrintModel {
 	}
 
 	public int insertTel(String movietitle, String starttime, String endtime, ArrayList<String> selectedSeat,
-			int person, int selectRoomnum, String date, String tel, int numOfDay) throws Exception {
+			int person, int selectRoomnum, String date, String tel, int numOfDay, String optionOf, int point) throws Exception {
 
 		con.setAutoCommit(false);
 		// ===============================================================================================
 		System.out.println("시작");
-		String sql2 = "INSERT INTO point ( tel ) VALUES ( ? )";
+		String sql2 = "INSERT INTO point ( tel, point ) VALUES ( ?,? )";
 		System.out.println("point -> tel 실패");
 		PreparedStatement ps2 = con.prepareStatement(sql2);
 		ps2.setString(1, tel);
+		ps2.setInt(2, point);
 		int result2 = ps2.executeUpdate();
 
 		if (result2 != 1) {
@@ -40,11 +41,11 @@ public class PrintModel {
 		}
 		System.out.println("포인트 인설트");
 		// =================================================================================================
-		String sql3 = "INSERT INTO payment ( paynum, sumof) VALUES ( sq_pay_paynum.nextval, ?)";
+		String sql3 = "INSERT INTO payment ( paynum, sumof, optionof) VALUES ( sq_pay_paynum.nextval, ?, ?)";
 		System.out.println("payment -> 실패");
 		PreparedStatement ps3 = con.prepareStatement(sql3);
 		ps3.setInt(1, person * 10000);
-		// ps3.setString(2, optionof);
+		ps3.setString(2, optionOf);
 
 		int result3 = ps3.executeUpdate();
 
@@ -88,13 +89,26 @@ public class PrintModel {
 
 		// }else{
 //		String sql7 = "UPDATE screen SET selected = ?,SELECTEDNUM = ? WHERE SCREENID = ?";
-         String sql7 =  "UPDATE screen     "
+		moviedate = String.valueOf(date.charAt(5)) + date.charAt(6) + date.charAt(8) + date.charAt(9);
+		screenId = selectRoomnum + "#" + moviedate + "#" + numOfDay;
+		
+		String sql4 = "SELECT selectednum FROM screen WHERE screenid = ?";
+		PreparedStatement ps4 = con.prepareStatement(sql4);
+		ps4.setString(1, screenId);
+		ResultSet rs4 = ps4.executeQuery();
+		int selectednum = 0;
+		while(rs4.next()){
+			selectednum = rs4.getInt("selectednum");
+		}
+		
+        String sql7 =  "UPDATE screen     "
           + "SET selected = ( (SELECT selected FROM screen WHERE screenid = ?) || ? ),    "
         		 + "selectednum = ?   WHERE screenid = ? ";
 		PreparedStatement ps7 = con.prepareStatement(sql7);
 		System.out.println(sql7);
 		String seat = "";
 		for (int i = 0; i < person; i++) {
+			
 			if (selectedSeat.get(i).length() < 3) {
 				int row = (int) (selectedSeat.get(i).charAt(0) - 'A')+1;
 				char col = selectedSeat.get(i).charAt(1);
@@ -107,12 +121,12 @@ public class PrintModel {
 				System.out.println(seat);
 			}
 		}
-		moviedate = String.valueOf(date.charAt(5)) + date.charAt(6) + date.charAt(8) + date.charAt(9);
-		screenId = selectRoomnum + "#" + moviedate + "#" + numOfDay;
+		
+		
 		
 		ps7.setString(1, screenId);
 		ps7.setString(2, seat);
-		ps7.setInt(3, person);
+		ps7.setInt(3, person+selectednum);
 		ps7.setString(4, screenId);
 		System.out.println("screenId:" + screenId);
 		System.out.println("seat:" + seat);
@@ -186,10 +200,14 @@ public class PrintModel {
 
 		con.commit();
 		con.setAutoCommit(true);
+		
+		rs4.close();
 		ps1.close();
 		ps2.close();
 		ps3.close();
-		// ps4.close();
+		ps4.close();
+		ps7.close();
+		
 		//ps5.close();
 		return 0;
 	}

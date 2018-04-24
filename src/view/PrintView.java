@@ -32,13 +32,13 @@ import javax.swing.SwingConstants;
 		ArrayList<String> selectedSeat;
 		int person;
 		int selectRoomnum, numOfDay;
-		
+		int point;
 		PrintModel model;
 		JLabel lblPrev;
 		
 		
 		public PrintView(String movietitle, String starttime, String endtime, ArrayList<String> selectedSeat,
-				int person, int selectRoomnum,String date,int numOfDay,String optionOf) {
+				int person, int selectRoomnum,String date,int numOfDay,String optionOf, int point) {
 			this.movietitle = movietitle;
 			this.starttime = starttime;
 			this.endtime = endtime;
@@ -48,12 +48,23 @@ import javax.swing.SwingConstants;
 			this.date= date;
 			this.numOfDay = numOfDay;
 			this.optionOf = optionOf;
+			this.point = point;
 			setBackground(Color.WHITE);
+			pointCal();
 			addLayout();
 			eventProc();
 			connectDB();
 		}
-
+		
+		void pointCal(){
+			if(optionOf.equals("credit") || optionOf.equals("cash")){
+				point = (int)(point + (person*10000 *0.03));
+			}else if(optionOf.equals("point")){
+				point = point - (person*10000);
+			}
+			
+			System.out.println(point);
+		}
 		void eventProc(){
 			MyMouseListener mc = new MyMouseListener();
 			lblPrint.addMouseListener(mc);
@@ -90,7 +101,7 @@ import javax.swing.SwingConstants;
 				}else if(evt == lblSend){
 					try {
 						String tel = tf_tel.getText();
-						model.insertTel(movietitle, starttime, endtime, selectedSeat, person, selectRoomnum, date, tel, numOfDay);
+						model.insertTel(movietitle, starttime, endtime, selectedSeat, person, selectRoomnum, date, tel, numOfDay, optionOf,point);
 					} catch (Exception e1) {
 						System.out.println("전화번호가 등록 되지 않았습니다. : "+e1.getMessage());
 						e1.printStackTrace();
@@ -179,7 +190,7 @@ import javax.swing.SwingConstants;
 			lblPrintInfo3.setBounds(12, 272, 67, 27);
 			p_receipt.add(lblPrintInfo3);
 			
-			lblPrintInfoMoney = new JLabel(Integer.toString(person*10000));
+			lblPrintInfoMoney = new JLabel(Integer.toString(person*10000)+"원");
 			lblPrintInfoMoney.setForeground(Color.DARK_GRAY);
 			lblPrintInfoMoney.setFont(new Font("맑은 고딕", Font.BOLD, 15));
 			lblPrintInfoMoney.setBounds(91, 272, 67, 27);
@@ -203,7 +214,7 @@ import javax.swing.SwingConstants;
 			lblPrintInfo4.setBounds(12, 334, 81, 27);
 			p_receipt.add(lblPrintInfo4);
 			
-			lblPrintInfoPoint = new JLabel("\"0000점\"");
+			lblPrintInfoPoint = new JLabel(point+"점");
 			lblPrintInfoPoint.setForeground(Color.DARK_GRAY);
 			lblPrintInfoPoint.setFont(new Font("맑은 고딕", Font.BOLD, 15));
 			lblPrintInfoPoint.setBounds(91, 334, 67, 27);
