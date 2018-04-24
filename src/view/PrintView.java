@@ -178,7 +178,7 @@ import javax.swing.SwingConstants;
 			lblPrintInfo3.setBounds(12, 272, 67, 27);
 			p_receipt.add(lblPrintInfo3);
 			
-			lblPrintInfoMoney = new JLabel("\"0000원\"");
+			lblPrintInfoMoney = new JLabel(Integer.toString(person*10000));
 			lblPrintInfoMoney.setForeground(Color.DARK_GRAY);
 			lblPrintInfoMoney.setFont(new Font("맑은 고딕", Font.BOLD, 15));
 			lblPrintInfoMoney.setBounds(91, 272, 67, 27);

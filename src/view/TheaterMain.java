@@ -7,24 +7,30 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 public class TheaterMain extends JFrame{
-	public static JPanel cardPanel;
+	public static JPanel cardPanel,cardPanel2;
 	public static CardLayout card;
 	StartView sv;
 	MovieView mv;
-	
+	LoginView lv;
 	public TheaterMain() {  
 		card = new CardLayout();
+//		card2 = new CardLayout();
 		cardPanel = new JPanel(card);
+		cardPanel2 = new JPanel(card);
 		JTabbedPane  pane = new JTabbedPane();
 		MakeScheduleView msv = new MakeScheduleView();
-
+		
 		cardPanel.add("sv", new StartView());
 		cardPanel.add("mv", new MovieView());
 		cardPanel.add("bv",new BookingView());
 		add(cardPanel);
 		
+		cardPanel2.add("lv", new LoginView());
+		cardPanel2.add("msv", new MakeScheduleView());
+		
 		pane.addTab("고객", cardPanel);
-		pane.addTab("관리자", msv);
+		pane.addTab("관리자", cardPanel2);
+		
 		add(pane);
 		setSize(800, 600);
 		setVisible(true);

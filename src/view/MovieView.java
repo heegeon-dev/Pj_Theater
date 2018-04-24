@@ -112,11 +112,11 @@ public class MovieView extends JPanel implements ActionListener {
 		btnNewButton.setBounds(285, 45, 235, 45);
 		panel_1.add(btnNewButton);
 
-		btnNewButton_1 = new JButton("00");
+		btnNewButton_1 = new JButton("<");
 		btnNewButton_1.setForeground(Color.LIGHT_GRAY);
 		btnNewButton_1.setFont(new Font("맑은 고딕", Font.BOLD, 20));
 		btnNewButton_1.setBackground(Color.DARK_GRAY);
-		btnNewButton_1.setBounds(207, 45, 167, 45);
+		btnNewButton_1.setBounds(198, 45, 75, 45);
 		panel_1.add(btnNewButton_1);
 
 		button = new JButton(">");
