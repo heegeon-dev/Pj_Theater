@@ -56,9 +56,9 @@ public class PrintModel {
 		// ==================================================================================================
 
 		// sql 작업중
-		String sql5 = "SELECT screenno, moviedate, numofday FROM screen";
-		PreparedStatement ps5 = con.prepareStatement(sql5);
-		ResultSet rs5 = ps5.executeQuery();
+//		String sql5 = "SELECT screenno, moviedate, numofday FROM screen";
+//		PreparedStatement ps5 = con.prepareStatement(sql5);
+//		ResultSet rs5 = ps5.executeQuery();
 
 		// while(rs5.next()){
 		// System.out.println(rs5.getInt("screenno")+rs5.getString("moviedate")+rs5.getInt("numofday")+"asdf");
@@ -87,8 +87,12 @@ public class PrintModel {
 		// }
 
 		// }else{
-		String sql7 = "UPDATE screen SET selected = ?,SELECTEDNUM = ? WHERE SCREENID = ?";
+//		String sql7 = "UPDATE screen SET selected = ?,SELECTEDNUM = ? WHERE SCREENID = ?";
+         String sql7 =  "UPDATE screen     "
+          + "SET selected = ( (SELECT selected FROM screen WHERE screenid = ?) || ? ),    "
+        		 + "selectednum = ?   WHERE screenid = ? ";
 		PreparedStatement ps7 = con.prepareStatement(sql7);
+		System.out.println(sql7);
 		String seat = "";
 		for (int i = 0; i < person; i++) {
 			if (selectedSeat.get(i).length() < 3) {
@@ -103,14 +107,19 @@ public class PrintModel {
 				System.out.println(seat);
 			}
 		}
-		ps7.setString(1, seat);
-		ps7.setInt(2, person);
 		moviedate = String.valueOf(date.charAt(5)) + date.charAt(6) + date.charAt(8) + date.charAt(9);
 		screenId = selectRoomnum + "#" + moviedate + "#" + numOfDay;
-		ps7.setString(3, screenId);
-		System.out.println(selectedSeat.toString() + "\n" + selectRoomnum + "#" + moviedate + "#" + numOfDay);
+		
+		ps7.setString(1, screenId);
+		ps7.setString(2, seat);
+		ps7.setInt(3, person);
+		ps7.setString(4, screenId);
+		System.out.println("screenId:" + screenId);
+		System.out.println("seat:" + seat);
+		System.out.println("person: "+ person);
+				
 		int result7 = ps7.executeUpdate();
-
+		System.out.println("실행:" + result7 );
 		if (result7 != 1) {
 			con.rollback();
 			return -1;
@@ -181,7 +190,7 @@ public class PrintModel {
 		ps2.close();
 		ps3.close();
 		// ps4.close();
-		ps5.close();
+		//ps5.close();
 		return 0;
 	}
 
