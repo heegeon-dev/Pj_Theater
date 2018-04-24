@@ -3,6 +3,8 @@ package view;
 import javax.swing.*;
 import javax.swing.plaf.synth.SynthSplitPaneUI;
 
+import model.MovieModel;
+
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -38,10 +40,12 @@ public class MovieView extends JPanel implements ActionListener {
 	int col = 4;
 	int curRow;
 	int curCol;
+	
+	MovieModel model;
 
 	SimpleDateFormat format1, format2, format3;
 
-	String movietitle, movieRunnigtime, movieStartTime;
+	String movietitle, movieRunnigtime, movieStartTime, reserved;
 
 	// 각 영화정보를 담은 라벨. 그리고 그 라벨의 시간과 제목을 담을 String 배열
 	JLabel[][] movieAll = new JLabel[row][col];
@@ -63,7 +67,7 @@ public class MovieView extends JPanel implements ActionListener {
 	// 상영관_영화제목_시간대 를 담은 파일을 받아올 변수
 
 	public MovieView() {
-
+		model = new MovieModel();
 		// 날짜버튼에 보여주기 위한 포멧
 		format1 = new SimpleDateFormat("yyyy.MM.dd", Locale.KOREA);
 		// 해당일의 파일읽어오기 위한
@@ -77,12 +81,10 @@ public class MovieView extends JPanel implements ActionListener {
 
 		addLayout();
 		eventProc();
-		btnNewButton
-				.setText(format1.format(thiscal.getTime()) + " " + week[thiscal.get(Calendar.DAY_OF_WEEK) - 1] + "요일");
+		btnNewButton.setText(format1.format(thiscal.getTime()) + " " + week[thiscal.get(Calendar.DAY_OF_WEEK) - 1] + "요일");
 		try {
 			showInfo();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -248,6 +250,7 @@ public class MovieView extends JPanel implements ActionListener {
 
 	}
 
+	//영화 스케줄 파일에서 데이터 읽어옴
 	public void readScadule() throws Exception {
 
 		// System.out.println(format2.format(curcal.getTime()) +
@@ -294,6 +297,7 @@ public class MovieView extends JPanel implements ActionListener {
 		}
 	}
 
+	//위에서 읽어온 영화스케줄을 movie 라벨에 띄워줌
 	public void showInfo() throws Exception {
 
 		readScadule();
@@ -322,16 +326,17 @@ public class MovieView extends JPanel implements ActionListener {
 				
 				String[] movie = room.get(RoomNum - 1).get(j);
 
-//				 System.out.println(movie[0]);
-//				 System.out.println(movie[1]);
-//				 System.out.println(movie[2]);
-				
+
 				if (temp.getTime().compareTo(format3.parse(movie[1])) > 0) {
 					i--;
 					continue;
 				} else {
+					
+					// TODO  :예약된 좌석수 받아오기.  
+					getReSeat(RoomNum, thisday, String.valueOf(movie[3]));
+										
 					String movieInfo = "<html>" + movie[3]+"회차"+"<br>" + movie[1] + "~" + movie[2] + "<br>" + movie[0] + "<br>"
-							+ movieRunnigtime + "</html>";
+							+ reserved+" / 80" + "</html>";
 					movieAll[RoomNum - 1][i].setText(movieInfo);
 				}
 			} // end of for roop_'j' :영화별 회차
@@ -343,20 +348,16 @@ public class MovieView extends JPanel implements ActionListener {
 						// 라밸 색 바꿔야함
 					}
 
-		}
+		}// end of for roop_'roomNum' :각 상영관 전체
 		RoomNum = 1;
 		room.clear();
+		
+	}	// end of showInfo()
+
+	public void getReSeat(int RoomNum, String thisday, String movieRound){
+		reserved =model.getReSeat(RoomNum, thisday, movieRound);
 	}
-
-	// end of for roop_'roomNum' :각 상영관 전체
-
-	// for(int i=0 ; i <room.size() ; i ++)
-	// for(int j=0 ; j<room.get(i).size();j++){
-	// System.out.println(room.get(i).get(j)[0]);
-	// System.out.println(room.get(i).get(j)[1]);
-	// }
-	// end of showInfo()
-
+	
 	public void viewClear() {
 		for (int i = 0; i < row; i++) {
 			for (int j = 0; j < col; j++) {
@@ -368,19 +369,16 @@ public class MovieView extends JPanel implements ActionListener {
 	@Override // 액션리스너 for buttons
 	public void actionPerformed(ActionEvent e) {
 
-		// TODO Auto-generated method stub
 		Object evt = e.getSource();
 
 		if (evt == btnNewButton_1) {
 			thiscal.add(Calendar.DATE, -1);
 			// 버튼을 setText( cal 값으로 )
-			btnNewButton.setText(
-					format1.format(thiscal.getTime()) + " " + week[thiscal.get(Calendar.DAY_OF_WEEK) - 1] + "요일");
+			btnNewButton.setText(format1.format(thiscal.getTime()) + " " + week[thiscal.get(Calendar.DAY_OF_WEEK) - 1] + "요일");
 			thisday = format2.format(thiscal.getTime());
 			try {
 				showInfo();
 			} catch (Exception e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 		} else if (evt == button) {
@@ -392,10 +390,8 @@ public class MovieView extends JPanel implements ActionListener {
 			try {
 				showInfo();
 			} catch (Exception e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			// TODO Auto-generated catch block
 		}
 
 	}

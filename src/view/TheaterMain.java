@@ -12,7 +12,7 @@ public class TheaterMain extends JFrame{
 	StartView sv;
 	MovieView mv;
 	
-	public TheaterMain() {
+	public TheaterMain() {  
 		card = new CardLayout();
 		cardPanel = new JPanel(card);
 		JTabbedPane  pane = new JTabbedPane();
@@ -23,14 +23,13 @@ public class TheaterMain extends JFrame{
 		cardPanel.add("bv",new BookingView());
 		add(cardPanel);
 		
-		pane.addTab("고객", cardPanel );
+		pane.addTab("고객", cardPanel);
 		pane.addTab("관리자", msv);
 		add(pane);
 		setSize(800, 600);
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		
 	}
 	
 	public static void main(String[] args) {
