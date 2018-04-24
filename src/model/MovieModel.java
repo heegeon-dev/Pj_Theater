@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import db.TheaterDB;
 
 public class MovieModel {
-	
+
 	String reserved;
 
 	TheaterDB db;
@@ -33,23 +33,26 @@ public class MovieModel {
 
 	public String getReSeat(int RoomNum, String thisday, String movieRound) {
 		try {
-//			String sql = "Select selectednum from screen where screenid='1#0424#3'";
+			// String sql = "Select selectednum from screen where
+			// screenid='1#0424#3'";
 			String sql = "Select selectednum from screen where screenid=?";
 			PreparedStatement ps;
 			ps = con.prepareStatement(sql);
 			String str = RoomNum + "#" + thisday + "#" + movieRound;
 			ps.setString(1, str);
-			
+
 			ResultSet rs = ps.executeQuery();
-			rs.next();
-			reserved =rs.getString("selectednum");
-			System.out.println(reserved);
+			while (rs.next()) {
+				reserved = rs.getString("selectednum");
+			}
 		} catch (SQLException e) {
-			System.out.println("예약좌석수 입력실패"+e.getMessage());
+			System.out.println("예약좌석수 입력실패" + e.getMessage());
 			e.printStackTrace();
 		}
+		if(reserved == null)
+			reserved = "0";
 		return reserved;
 
 	}
-	
+
 }

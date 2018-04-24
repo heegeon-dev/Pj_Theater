@@ -100,7 +100,7 @@ public class SeatView extends Panel implements MouseListener {
 
 		for (int i = 0; i < selectedSeats.size(); i++) {
 			int row ,col;
-			if (selectedSeat.get(i).length() < 3) {
+			if (selectedSeats.get(i).length() < 3) {
 				 row = Integer.parseInt(String.valueOf(selectedSeats.get(i).charAt(0))) - 1;
 				 col = Integer.parseInt(String.valueOf(selectedSeats.get(i).charAt(1))) - 1;
 			}else{
