@@ -51,6 +51,7 @@ public class MovieModel {
 		}
 		if(reserved == null)
 			reserved = "0";
+		System.out.println(reserved);
 		return reserved;
 
 	}

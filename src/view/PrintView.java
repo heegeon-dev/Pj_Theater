@@ -96,6 +96,7 @@ import java.awt.event.ActionEvent;
 				if(evt == lblPrint){
 					try {
 						model.insertPrint(movietitle, starttime, endtime, selectedSeat, person, selectRoomnum, date, numOfDay, optionOf);
+						JOptionPane.showMessageDialog(null, "출력이 완료 되었습니다.");
 					} catch (Exception e1) {
 						System.out.println("출력이 완료 되지 않았습니다. : "+e1.getMessage());
 						e1.printStackTrace();
@@ -120,6 +121,12 @@ import java.awt.event.ActionEvent;
 				}else if (evt == lblPrev){
 					TheaterMain.card.show(TheaterMain.cardPanel, "pv");
 				}else if (evt == bt_cancel){
+					try {
+						TheaterMain.mv.showInfo();
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 					TheaterMain.card.show(TheaterMain.cardPanel, "sv");
 				}
 

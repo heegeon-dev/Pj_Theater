@@ -15,11 +15,9 @@ public class BookingModel {
 
 	TheaterDB db;
 	Connection con;
-	ArrayList<String> infoList;
 
 	public BookingModel() {
 
-		infoList = new ArrayList<String>();
 		connectDB();
 
 	}
@@ -34,41 +32,33 @@ public class BookingModel {
 	}
 
 	public ArrayList<String> getinfoByTel(String tel) {
-
+		ArrayList<String> infoList= new ArrayList<String>();
 		try {
-			SimpleDateFormat format3 = new SimpleDateFormat("HH:mm", Locale.KOREA);
-			Calendar c = Calendar.getInstance();
 
-			String sql = " select m.TITLE TITLE, s.MOVIEDATE MOVIEDATE, "
-					+ " b.RUNTIME RUNTIME, b.SEAT SEAT, p.SUMOF SUMOF, p.OPTIONOF OPTIONOF "
-					+ " from movie m, booking b, screen s, payment p "
-					+ " where m.movie_no = b.movie_no and b.screenid = s.screenid and " + " b.paynum = p.paynum "
-					+ " and tel = ?";
+			String sql = " SELECT m.TITLE title, b.MOVIEDATE MOVIEDATE, m.RUNINGTIME RUNINGTIME, "
+					+ " b.RUNTIME RUNTIME, s.SCREENNO SCREENNO, b.SEAT SEAT, p.SUMOF SUMOF, "
+					+ " pt.POINT POINT, p.OPTIONOF OPTIONOF, b.people people "
+					+ " FROM movie m, booking b , screen s , payment p ,point pt "
+					+ " WHERE b.MOVIE_NO = m.MOVIE_NO and " + " b.PAYNUM = p.PAYNUM and  b.SCREENID = s.SCREENID and "
+					+ " b.TEL = pt.TEL and   b.tel = ? ";
 			PreparedStatement ps = con.prepareStatement(sql);
 			ps.setString(1, tel);
 
 			ResultSet rs = ps.executeQuery();
 
-			rs.next();
-			infoList.add(rs.getString("TITLE"));
-			infoList.add(rs.getString("MOVIEDATE"));
-			String start = rs.getString("RUNTIME");
+			while (rs.next()) {
+				infoList.add(rs.getString("title"));// 0
+				infoList.add(rs.getString("MOVIEDATE"));// 1
+				infoList.add(rs.getString("RUNINGTIME"));// 2 _120
+				infoList.add(rs.getString("RUNTIME"));// 3
+				infoList.add(rs.getString("SCREENNO"));// 4
+				infoList.add(rs.getString("SEAT"));// 5
+				infoList.add(rs.getString("SUMOF"));// 6
+				infoList.add(rs.getString("POINT"));// 7
+				infoList.add(rs.getString("OPTIONOF")); // 8
+				infoList.add(rs.getString("people"));// 9
 
-			System.out.println(start);// 21:30
-			System.out.println();
-			format3.parse(start);
-			c.setTime(format3.parse(start));
-			c.add(Calendar.HOUR_OF_DAY, 2);
-			String end = format3.format(c.getTime());
-			
-			String runtime = start +" ~ " + end;
-			infoList.add(runtime);
-			//infoList.add(rs.getString("RUNTIME"));
-
-			infoList.add(rs.getString("SEAT"));
-			infoList.add(rs.getString("SUMOF"));
-			infoList.add(rs.getString("OPTIONOF"));
-
+			}
 		} catch (Exception e) {
 			System.out.println("예매내역 출력 실패" + e.getMessage());
 			e.printStackTrace();

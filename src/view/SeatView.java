@@ -31,7 +31,7 @@ public class SeatView extends Panel implements MouseListener {
 	ArrayList<String> selectedSeat, selectedSeats;
 	String movietitle, starttime, endtime, date;
 	int selectRoomnum;
-	JLabel lblPrev, lblCancel, lblOK;
+	JLabel lblPrev, lblOK;
 	private JLabel lblCGVimg;
 	int numOfDay;
 	SeatModel model;
@@ -49,7 +49,7 @@ public class SeatView extends Panel implements MouseListener {
 		addLayout();
 		initSeat();
 		eventProc();
-		movieinfo.setText("<html>" + movietitle + "<br>" + starttime + "</html>");
+		movieinfo.setText(movietitle + "     " + starttime);
 		model = new SeatModel();
 
 		lblCGVimg = new JLabel("New label");
@@ -99,16 +99,18 @@ public class SeatView extends Panel implements MouseListener {
 				booking[i][j] = false;
 
 		for (int i = 0; i < selectedSeats.size(); i++) {
-			int row ,col;
+			int row, col;
 			if (selectedSeats.get(i).length() < 3) {
-				 row = Integer.parseInt(String.valueOf(selectedSeats.get(i).charAt(0))) - 1;
-				 col = Integer.parseInt(String.valueOf(selectedSeats.get(i).charAt(1))) - 1;
-			}else{
-				 row = Integer.parseInt(String.valueOf(selectedSeats.get(i).charAt(0))) - 1;
-				 col = Integer.parseInt(String.valueOf(selectedSeats.get(i).charAt(1))+selectedSeats.get(i).charAt(2)) - 1;
+				row = Integer.parseInt(String.valueOf(selectedSeats.get(i).charAt(0))) - 1;
+				col = Integer.parseInt(String.valueOf(selectedSeats.get(i).charAt(1))) - 1;
+			} else {
+				row = Integer.parseInt(String.valueOf(selectedSeats.get(i).charAt(0))) - 1;
+				col = Integer.parseInt(String.valueOf(selectedSeats.get(i).charAt(1)) + selectedSeats.get(i).charAt(2))
+						- 1;
 			}
 			System.out.println(col + "" + row);
-			seat[row][col].setBackground(Color.black);
+			seat[row][col].setBackground(Color.DARK_GRAY);
+			seat[row][col].setForeground(Color.DARK_GRAY);
 			booking[row][col] = true;
 		}
 
@@ -119,7 +121,6 @@ public class SeatView extends Panel implements MouseListener {
 		jb_plus.addMouseListener(this);
 		lblOK.addMouseListener(this);
 		lblPrev.addMouseListener(this);
-		lblCancel.addMouseListener(this);
 		for (int i = 0; i < seat.length; i++)
 			for (int j = 0; j < seat[i].length; j++)
 				seat[i][j].addMouseListener(this);
@@ -140,7 +141,11 @@ public class SeatView extends Panel implements MouseListener {
 		add(jl_Screen);
 
 		movieinfo = new JLabel("New label");
-		movieinfo.setBounds(622, 232, 139, 66);
+		movieinfo.setForeground(Color.GRAY);
+		movieinfo.setFont(new Font("맑은 고딕", Font.BOLD, 20));
+		movieinfo.setBounds(158, 0, 298, 48);
+		movieinfo.setHorizontalAlignment(SwingConstants.CENTER);
+		movieinfo.setVerticalAlignment(SwingConstants.CENTER);
 		add(movieinfo);
 
 		lb_person = new JLabel("0");
@@ -163,18 +168,13 @@ public class SeatView extends Panel implements MouseListener {
 
 		lblPrev = new JLabel("New label");
 		lblPrev.setIcon(new ImageIcon("img\\p6.PNG"));
-		lblPrev.setBounds(667, 500, 110, 35);
+		lblPrev.setBounds(635, 500, 110, 35);
 		add(lblPrev);
 
 		lblOK = new JLabel("ok");
 		lblOK.setIcon(new ImageIcon("img\\p17.PNG"));
-		lblOK.setBounds(628, 355, 60, 40);
+		lblOK.setBounds(660, 355, 60, 40);
 		add(lblOK);
-
-		lblCancel = new JLabel("New label");
-		lblCancel.setIcon(new ImageIcon("img\\p16.PNG"));
-		lblCancel.setBounds(692, 355, 60, 40);
-		add(lblCancel);
 
 		for (int i = 0; i < seat.length; i++)
 			for (int j = 0; j < seat[i].length; j++) {
@@ -212,22 +212,23 @@ public class SeatView extends Panel implements MouseListener {
 				lb_person.setText(String.valueOf(person));
 			}
 		} else if (lblOK == ob) {
+			if(cnt==0){
+				JOptionPane.showMessageDialog(null, "인원 수에 맞는 좌석을 선택해 주세요");
+				return;
+			}
 			System.out.println(movietitle + " " + starttime + " " + endtime + " " + " " + person);
 			Collections.sort(selectedSeat);
 			System.out.println(selectedSeat.toString());
-			if(cnt<person){
+			if (cnt < person) {
 				JOptionPane.showMessageDialog(null, "인원 수에 맞는 좌석을 선택해 주세요");
-				return ;
+				return;
 			}
 			TheaterMain.cardPanel.add("pv",
 					new PayView(movietitle, starttime, endtime, selectedSeat, person, selectRoomnum, date, numOfDay));
 			TheaterMain.card.show(TheaterMain.cardPanel, "pv");
 		} else if (lblPrev == ob) {
 			TheaterMain.card.show(TheaterMain.cardPanel, "mv");
-		} else if (lblCancel == ob) {
-			JOptionPane.showMessageDialog(null, "클릭한거 취소 구현해야함");
 		}
-
 		for (int i = 0; i < seat.length; i++)
 			for (int j = 0; j < seat[i].length; j++) {
 				if (seat[i][j] == ob) {
