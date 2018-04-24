@@ -21,6 +21,106 @@ public class PrintModel {
 		infoList = new ArrayList<ArrayList<String>>();
 		con = TheaterDB.getConnection();
 	}
+	
+	public int insertPrint(String movietitle, String starttime, String endtime, ArrayList<String> selectedSeat,
+			int person, int selectRoomnum, String date, int numOfDay, String optionOf) throws Exception{
+		con.setAutoCommit(false);
+//		=========================================================================================
+		String sql1 = "INSERT INTO payment ( paynum, sumof, optionof) VALUES ( sq_pay_paynum.nextval, ?, ?)";
+		System.out.println("payment -> 실패");
+		PreparedStatement ps1 = con.prepareStatement(sql1);
+		ps1.setInt(1, person * 10000);
+		ps1.setString(2, optionOf);
+
+		int result1 = ps1.executeUpdate();
+
+		if (result1 != 1) {
+			con.rollback();
+			return -1;
+		}
+//		=================================================================================================
+		
+		moviedate = String.valueOf(date.charAt(5)) + date.charAt(6) + date.charAt(8) + date.charAt(9);
+		screenId = selectRoomnum + "#" + moviedate + "#" + numOfDay;
+		
+		String sql2 = "SELECT selectednum FROM screen WHERE screenid = ?";
+		PreparedStatement ps2 = con.prepareStatement(sql2);
+		ps2.setString(1, screenId);
+		ResultSet rs2 = ps2.executeQuery();
+		int selectednum = 0;
+		while(rs2.next()){
+			selectednum = rs2.getInt("selectednum");
+		}
+		
+		
+		
+		String sql3 =  "UPDATE screen     "
+		          + "SET selected = ( (SELECT selected FROM screen WHERE screenid = ?) || ? ),    "
+		        		 + "selectednum = ?   WHERE screenid = ? ";
+				PreparedStatement ps3 = con.prepareStatement(sql3);
+				System.out.println(sql3);
+				String seat = "";
+				for (int i = 0; i < person; i++) {
+					
+					if (selectedSeat.get(i).length() < 3) {
+						int row = (int) (selectedSeat.get(i).charAt(0) - 'A')+1;
+						char col = selectedSeat.get(i).charAt(1);
+						seat = seat + "$" + row + col;
+						System.out.println(seat);
+					}else{
+						int row = (int) (selectedSeat.get(i).charAt(0) - 'A')+1;
+						String col = selectedSeat.get(i).charAt(1)+""+selectedSeat.get(i).charAt(2);
+						seat = seat + "$" + row + col;
+						System.out.println(seat);
+					}
+				}
+				
+				ps3.setString(1, screenId);
+				ps3.setString(2, seat);
+				ps3.setInt(3, person+selectednum);
+				ps3.setString(4, screenId);
+				
+				int result3 = ps3.executeUpdate();
+				
+				if (result3 != 1) {
+					con.rollback();
+					return -1;
+				}
+//		=================================================================================================
+				String seats = "";
+				for (int i = 0; i < selectedSeat.size(); i++) {
+					seats = seats + "&" + selectedSeat.get(i);
+				}
+				System.out.println(seats);
+
+				String sql4 = "INSERT INTO booking ( bookno, screenid, runtime, moviedate, people, seat, paynum, movie_no)     "
+						+ "VALUES ( SQ_BOOKING_BOOKNO.nextval,?, ?, ?, ?, ?, sq_pay_paynum.currval,(SELECT movie_no FROM movie WHERE TITLE = ?) )";
+				System.out.println("booking -> 실패");
+				PreparedStatement ps4 = con.prepareStatement(sql4);
+				ps4.setString(1, screenId);
+				ps4.setString(2, starttime);
+				ps4.setString(3, date);
+				ps4.setInt(4, person);
+				ps4.setString(5, seats);
+				ps4.setString(6, movietitle);
+				int result4 = ps4.executeUpdate();
+
+				if (result4 != 1) {
+					con.rollback();
+					return -1;
+				}
+				System.out.println("부킹 인설트");
+//				====================================================================================
+				con.commit();
+				con.setAutoCommit(true);
+		
+		rs2.close();
+		ps1.close();
+		ps2.close();
+		ps3.close();
+		ps4.close();
+		return 0;
+	}
 
 	public int insertTel(String movietitle, String starttime, String endtime, ArrayList<String> selectedSeat,
 			int person, int selectRoomnum, String date, String tel, int numOfDay, String optionOf, int point) throws Exception {
@@ -54,6 +154,8 @@ public class PrintModel {
 			return -1;
 		}
 		System.out.println("페이먼트 인설트");
+		
+		
 		// ==================================================================================================
 
 		// sql 작업중

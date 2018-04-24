@@ -89,7 +89,12 @@ import javax.swing.SwingConstants;
 			public void mouseClicked(MouseEvent e) {
 				Object evt = e.getSource();
 				if(evt == lblPrint){
-					JOptionPane.showMessageDialog(null, "출력이 완료되었습니다.");
+					try {
+						model.insertPrint(movietitle, starttime, endtime, selectedSeat, person, selectRoomnum, date, numOfDay, optionOf);
+					} catch (Exception e1) {
+						System.out.println("출력이 완료 되지 않았습니다. : "+e1.getMessage());
+						e1.printStackTrace();
+					}
 				}else if (evt == lblMobile){
 					
 						tf_tel.setVisible(!tf_tel.isVisible());
