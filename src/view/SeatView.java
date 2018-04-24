@@ -215,6 +215,10 @@ public class SeatView extends Panel implements MouseListener {
 			System.out.println(movietitle + " " + starttime + " " + endtime + " " + " " + person);
 			Collections.sort(selectedSeat);
 			System.out.println(selectedSeat.toString());
+			if(cnt<person){
+				JOptionPane.showMessageDialog(null, "인원 수에 맞는 좌석을 선택해 주세요");
+				return ;
+			}
 			TheaterMain.cardPanel.add("pv",
 					new PayView(movietitle, starttime, endtime, selectedSeat, person, selectRoomnum, date, numOfDay));
 			TheaterMain.card.show(TheaterMain.cardPanel, "pv");
